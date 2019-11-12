@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  var available = false;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -13,6 +20,24 @@ class AppDrawer extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      available ? "DISPONIBLE" : "NO DISPONIBLE",
+                      style: TextStyle(
+                          color: available ? Colors.green : Colors.red,
+                          fontSize: 18),
+                    ),
+                    Switch.adaptive(
+                        value: available,
+                        onChanged: (value) {
+                          setState(() {
+                            available = value;
+                          });
+                        })
+                  ],
+                ),
                 DrawerListTile(
                   title: "Home",
                   onTap: () {},
