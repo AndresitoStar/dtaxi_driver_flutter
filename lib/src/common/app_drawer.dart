@@ -14,7 +14,26 @@ class _AppDrawerState extends State<AppDrawer> {
       child: Column(
         children: <Widget>[
           DrawerHeader(
-            child: CircleAvatar(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      border: Border.all()),
+                  child: CircleAvatar(
+                    radius: 45,
+                    backgroundColor: Colors.grey,
+                  ),
+                ),
+                Text(
+                  "JIMMY EL META",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView(
