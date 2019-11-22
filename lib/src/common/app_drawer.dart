@@ -35,28 +35,39 @@ class _AppDrawerState extends State<AppDrawer> {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Divider(
+              color: Colors.grey,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(
+                available ? "DISPONIBLE" : "NO DISPONIBLE",
+                style: TextStyle(
+                    color: available ? Colors.green : Colors.red, fontSize: 18),
+              ),
+              Switch.adaptive(
+                  value: available,
+                  onChanged: (value) {
+                    setState(() {
+                      available = value;
+                    });
+                  })
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Divider(
+              color: Colors.grey,
+            ),
+          ),
           Expanded(
             child: ListView(
               shrinkWrap: true,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(
-                      available ? "DISPONIBLE" : "NO DISPONIBLE",
-                      style: TextStyle(
-                          color: available ? Colors.green : Colors.red,
-                          fontSize: 18),
-                    ),
-                    Switch.adaptive(
-                        value: available,
-                        onChanged: (value) {
-                          setState(() {
-                            available = value;
-                          });
-                        })
-                  ],
-                ),
                 DrawerListTile(
                   title: "Home",
                   onTap: () {},
@@ -136,7 +147,7 @@ class DrawerListTile extends StatelessWidget {
                 : Theme.of(context).primaryColor,
           ),
           title: Text(
-            this.title,
+            this.title.toUpperCase(),
             style: this.activeRoute == this.route
                 ? TextStyle(
                     color: Theme.of(context).primaryColorDark, fontSize: 18)
@@ -151,9 +162,6 @@ class DrawerListTile extends StatelessWidget {
                     this.route,
                   ),
         ),
-        Divider(
-          color: Colors.grey,
-        )
       ],
     );
   }
