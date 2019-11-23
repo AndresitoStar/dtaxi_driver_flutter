@@ -8,7 +8,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: dtaxiThemeData,
-      home: Homepage(title: 'Flutter Demo Home Page'),
+      home: Homepage(title: 'Flutter Demo Home Page', tab: HomepageTab.INBOX),
     );
   }
 }

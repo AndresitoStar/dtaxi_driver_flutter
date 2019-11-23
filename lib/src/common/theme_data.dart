@@ -15,7 +15,7 @@ var dtaxiThemeData = new ThemeData(
     ),
   ),
   errorColor: Color.fromRGBO(251, 0, 38, 1),
-  scaffoldBackgroundColor: Color.fromRGBO(214, 214, 214, 1),
+  scaffoldBackgroundColor: Color.fromRGBO(255, 255, 255, 1),
   buttonTheme: ButtonThemeData(
     buttonColor: Color.fromRGBO(38, 169, 224, 1),
   ),

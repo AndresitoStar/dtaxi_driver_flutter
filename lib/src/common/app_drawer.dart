@@ -1,3 +1,5 @@
+import 'package:dtaxi_driver/src/ui/homepage.dart';
+import 'package:dtaxi_driver/src/ui/lost_and_found.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -69,15 +71,58 @@ class _AppDrawerState extends State<AppDrawer> {
               shrinkWrap: true,
               children: <Widget>[
                 DrawerListTile(
-                  title: "Home",
+                  title: "BANDEJA DE ENTRADA",
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Homepage(
+                              title: "Bandeja de entrada",
+                              tab: HomepageTab.INBOX,
+                            )));
+                  },
+                  activeRoute: "/",
+                  icon: Icons.inbox,
+                  route: "/",
+                ),
+                DrawerListTile(
+                  title: "OBJETOS PERDIDOS",
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => LostAndFound()));
+                  },
+                  activeRoute: "/",
+                  icon: Icons.rv_hookup,
+                  route: "/",
+                ),
+                DrawerListTile(
+                  title: "AJUSTES",
                   onTap: () {},
                   activeRoute: "/",
-                  icon: Icons.add,
+                  icon: Icons.settings,
+                  route: "/",
+                ),
+                DrawerListTile(
+                  title: "CAMBIAR SESIÓN",
+                  onTap: () {},
+                  activeRoute: "/",
+                  icon: Icons.cancel,
                   route: "/",
                 )
               ],
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Divider(
+              color: Colors.grey,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+            child: Text(
+              "Desarrollado por Pyxel Solutions.",
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
+          ),
         ],
       ),
     );
