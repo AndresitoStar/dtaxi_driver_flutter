@@ -1,6 +1,7 @@
 import 'package:dtaxi_driver/src/common/theme_data.dart';
-import 'package:dtaxi_driver/src/ui/splash.dart';
 import 'package:flutter/material.dart';
+
+import 'bloc/authentication/authentication_page.dart';
 
 class App extends StatelessWidget {
   @override
@@ -9,7 +10,7 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       theme: dtaxiThemeData,
       //home: Homepage(title: 'Flutter Demo Home Page', tab: HomepageTab.INBOX),
-      home: Splash(),
+      home: AuthenticationPage(),
     );
   }
 }
