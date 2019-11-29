@@ -1,3 +1,4 @@
+import 'package:dtaxi_driver/src/ui/homepage.dart';
 import 'package:dtaxi_driver/src/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,8 +51,12 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
               loginCallback: (username, password) => widget._authenticationBloc
                   .dispatch(LoginAuthenticationEvent(username, password)),
             );
-          else
+          else if (currentState is ErrorAuthenticationState)
             return Container();
+          else
+            return Homepage(
+              title: "Bandeja de Entrada",
+            );
         });
   }
 }

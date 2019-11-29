@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dtaxi_driver/src/bloc/utils/secure_storage.dart';
 import 'package:meta/meta.dart';
 
 import 'index.dart';
@@ -8,6 +9,7 @@ import 'index.dart';
 abstract class AuthenticationEvent {
   Future<AuthenticationState> applyAsync(
       {AuthenticationState currentState, AuthenticationBloc bloc});
+
   final AuthenticationRepository _authenticationRepository =
       new AuthenticationRepository();
 }
@@ -20,7 +22,11 @@ class LoginInitAuthenticationEvent extends AuthenticationEvent {
   Future<AuthenticationState> applyAsync(
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
-      return new InAuthenticationState();
+      var token = await SecureStorage.getToken();
+      if (token != null && token != "")
+        return LoggedInAuthenticationState();
+      else
+        return InAuthenticationState();
     } catch (_, stackTrace) {
       print('$_ $stackTrace');
       return new ErrorAuthenticationState(_?.toString());
@@ -39,11 +45,10 @@ class LoginAuthenticationEvent extends AuthenticationEvent {
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
       var response = await _authenticationRepository.login(username, password);
+      SecureStorage.saveToken(response.results.first.token);
 
-      ///Save Token
-      ///response.results.first.token
-      return new InAuthenticationState();
-    } catch (_, stackTrace) { 
+      return new LoggedInAuthenticationState();
+    } catch (_, stackTrace) {
       print('$_ $stackTrace');
       return new ErrorAuthenticationState(_?.toString());
     }
