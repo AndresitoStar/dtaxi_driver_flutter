@@ -1,3 +1,4 @@
+import 'package:dtaxi_driver/src/bloc/authentication/index.dart';
 import 'package:dtaxi_driver/src/ui/homepage.dart';
 import 'package:dtaxi_driver/src/ui/lost_and_found.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,8 @@ class _AppDrawerState extends State<AppDrawer> {
                 ),
                 DrawerListTile(
                   title: "CAMBIAR SESIÓN",
-                  onTap: () {},
+                  onTap: () => AuthenticationBloc()
+                      .dispatch(LogoutAuthenticationEvent()),
                   activeRoute: "/",
                   icon: Icons.cancel,
                   route: "/",

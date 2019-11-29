@@ -6,6 +6,10 @@ class SecureStorage {
   }
 
   static Future<String> getToken() async {
-    return FlutterSecureStorage().read(key: "token").then((val) => val);
+    return FlutterSecureStorage().read(key: "token");
+  }
+
+  static void removeToken() {
+    FlutterSecureStorage().delete(key: "token");
   }
 }

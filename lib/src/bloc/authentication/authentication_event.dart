@@ -54,3 +54,18 @@ class LoginAuthenticationEvent extends AuthenticationEvent {
     }
   }
 }
+
+class LogoutAuthenticationEvent extends AuthenticationEvent {
+  @override
+  Future<AuthenticationState> applyAsync(
+      {AuthenticationState currentState, AuthenticationBloc bloc}) async {
+    try {
+      SecureStorage.removeToken();
+
+      return new InAuthenticationState();
+    } catch (_, stackTrace) {
+      print('$_ $stackTrace');
+      return new ErrorAuthenticationState(_?.toString());
+    }
+  }
+}
