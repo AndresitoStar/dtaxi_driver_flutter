@@ -10,7 +10,7 @@ class AuthenticationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var _authenticationBloc = new AuthenticationBloc();
     return new Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
           top: false,
           child: new AuthenticationScreen(

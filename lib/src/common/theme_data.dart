@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+var kPrimaryColor = Color.fromRGBO(247, 147, 30, 1);
+
 var dtaxiThemeData = new ThemeData(
-  primaryColor: Color.fromRGBO(247, 147, 30, 1),
-  accentColor: Color.fromRGBO(38, 169, 224, 1),
-  primaryColorDark: Color.fromRGBO(32, 66, 135, 1),
+  primaryColor: kPrimaryColor,
+  accentColor: Colors.white,
   tabBarTheme: TabBarTheme(labelColor: Colors.white),
   primaryTextTheme: TextTheme(
     title: TextStyle(color: Colors.white),
@@ -17,11 +18,24 @@ var dtaxiThemeData = new ThemeData(
   errorColor: Color.fromRGBO(251, 0, 38, 1),
   scaffoldBackgroundColor: Color.fromRGBO(255, 255, 255, 1),
   buttonTheme: ButtonThemeData(
-    buttonColor: Color.fromRGBO(38, 169, 224, 1),
+    buttonColor: kPrimaryColor,
+    textTheme: ButtonTextTheme.accent,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
   ),
   primaryIconTheme: IconThemeData(
     color: Colors.white,
   ),
-  buttonColor: Color.fromRGBO(38, 169, 224, 1),
+  cursorColor: kPrimaryColor,
+  inputDecorationTheme: InputDecorationTheme(
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.white),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: kPrimaryColor, width: 2),
+      ),
+      labelStyle: TextStyle(color: Colors.white),
+      hintStyle: TextStyle(color: kPrimaryColor),
+      focusColor: kPrimaryColor),
+  buttonColor: kPrimaryColor,
   dividerColor: Colors.grey.shade200,
 );
