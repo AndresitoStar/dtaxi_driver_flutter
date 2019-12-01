@@ -26,8 +26,9 @@ class AuthenticationResponse extends ResponseModel<AuthenticationModel> {
 class AuthenticationModel extends Equatable {
   final String token;
   final String fullname;
+  final Map role;
 
-  AuthenticationModel(this.token, this.fullname);
+  AuthenticationModel(this.token, this.fullname, this.role);
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationModelFromJson(json);

@@ -10,6 +10,7 @@ AuthenticationModel _$AuthenticationModelFromJson(Map<String, dynamic> json) {
   return AuthenticationModel(
     json['token'] as String,
     json['fullname'] as String,
+    json['role'] as Map<String, dynamic>,
   );
 }
 
@@ -18,4 +19,5 @@ Map<String, dynamic> _$AuthenticationModelToJson(
     <String, dynamic>{
       'token': instance.token,
       'fullname': instance.fullname,
+      'role': instance.role,
     };

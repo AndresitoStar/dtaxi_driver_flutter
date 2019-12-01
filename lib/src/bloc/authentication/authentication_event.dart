@@ -45,9 +45,12 @@ class LoginAuthenticationEvent extends AuthenticationEvent {
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
       var response = await _authenticationRepository.login(username, password);
-      SecureStorage.saveToken(response.results.first.token);
-
-      return new LoggedInAuthenticationState();
+      var user = response.results.first;
+      if (user.role["name"] == "DRIVER") {
+        SecureStorage.saveToken(response.results.first.token);
+        return new LoggedInAuthenticationState();
+      } else
+        return ErrorAuthenticationState("No es usuario Driver");
     } catch (_, stackTrace) {
       print('$_ $stackTrace');
       return new ErrorAuthenticationState(_?.toString());
