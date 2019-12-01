@@ -1,9 +1,9 @@
+import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:dtaxi_driver/src/common/app_drawer.dart';
 import 'package:dtaxi_driver/src/common/app_scaffold.dart';
 import 'package:flutter/material.dart';
 
 import 'accepted_inbox.dart';
-import 'all_inbox.dart';
 import 'asigned_inbox.dart';
 
 enum HomepageTab { INBOX, ASSIGNED, ACCEPTED }
@@ -29,7 +29,11 @@ class _HomepageState extends State<Homepage>
     with SingleTickerProviderStateMixin {
   TabController _controller;
   final List<_Page> _allPages = <_Page>[
-    _Page(text: "Todos", child: AllInbox()),
+    _Page(
+        text: "Todos",
+        child: DemandsScreen(
+          demandsBloc: DemandsBloc(),
+        )),
     _Page(text: "Asignados", child: AssignedInbox()),
     _Page(text: "Aceptados", child: AcceptedInbox())
   ];

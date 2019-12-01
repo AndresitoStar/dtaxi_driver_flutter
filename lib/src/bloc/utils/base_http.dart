@@ -1,3 +1,4 @@
+import 'package:dtaxi_driver/src/bloc/utils/secure_storage.dart';
 import 'package:graphql/client.dart';
 
 class BaseHttpConfig {
@@ -10,8 +11,14 @@ class BaseHttpConfig {
   static final BaseHttpConfig _baseHttpConfig = new BaseHttpConfig._internal();
 
   BaseHttpConfig._internal() {
+    final HttpLink _httpLink = HttpLink(uri: "http://10.0.0.131/api/graphql");
+    final AuthLink _authLink =
+        AuthLink(getToken: () async => await SecureStorage.getToken());
+
+    final Link _link = _authLink.concat(_httpLink);
+
     _clientGraph = new GraphQLClient(
-        link: HttpLink(uri: "http://10.0.0.131/api/graphql"),
+        link: _link,
         cache: NormalizedInMemoryCache(
             dataIdFromObject: typenameDataIdFromObject));
   }

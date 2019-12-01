@@ -15,11 +15,6 @@ class AuthenticationResponse extends ResponseModel<AuthenticationModel> {
     } else
       results = [];
   }
-
-  Map<String, dynamic> toJson(bool createCard) {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    return data;
-  }
 }
 
 @JsonSerializable()
@@ -34,4 +29,16 @@ class AuthenticationModel extends Equatable {
       _$AuthenticationModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$AuthenticationModelToJson(this);
+}
+
+@JsonSerializable()
+class Driver {
+  final String id;
+  final String name;
+  final String userId;
+
+  Driver(this.id, this.name, this.userId);
+
+  factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);
+  Map<String, dynamic> toJson() => _$DriverToJson(this);
 }

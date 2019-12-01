@@ -21,3 +21,17 @@ Map<String, dynamic> _$AuthenticationModelToJson(
       'fullname': instance.fullname,
       'role': instance.role,
     };
+
+Driver _$DriverFromJson(Map<String, dynamic> json) {
+  return Driver(
+    json['id'] as String,
+    json['name'] as String,
+    json['userId'] as String,
+  );
+}
+
+Map<String, dynamic> _$DriverToJson(Driver instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'userId': instance.userId,
+    };
