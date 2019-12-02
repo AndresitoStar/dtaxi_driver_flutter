@@ -34,4 +34,9 @@ class DemandsRepository {
     return await _demandsProvider
         .mutate(Mutations.acceptDemand, data: {"demandId": demandId});
   }
+
+  Future<ResponseModel<Demand>> cancelDemand(String demandId) async {
+    return await _demandsProvider
+        .mutate(Mutations.cancelDemand, data: {"demandId": demandId});
+  }
 }

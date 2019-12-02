@@ -46,12 +46,20 @@ class Queries {
 }
 
 class Mutations {
-  static const acceptDemand = Fragments.demandResults +
-      """
+  static const acceptDemand = """
    mutation acceptDemand (\$demandId: ID!){
    demandAccepted (demandId:\$demandId) {
-     ...results
+     id
+     state
    }
+ }
+  """;
+
+  static const cancelDemand = """
+mutation cancelDemandByDriver (\$demandId: ID!, \$reason: String, \$canceledType: CanceledType!){
+    cancelDemandByDriver(demandId:\$demandId, reason:\$reason, canceledType:\$canceledType) {
+      id
+    }
  }
   """;
 }

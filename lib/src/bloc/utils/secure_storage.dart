@@ -12,4 +12,15 @@ class SecureStorage {
   static void removeToken() {
     FlutterSecureStorage().delete(key: "token");
   }
+
+  static void saveUserAndPass(String username, String password) {
+    FlutterSecureStorage().write(key: "username", value: username);
+    FlutterSecureStorage().write(key: "password", value: password);
+  }
+
+  static Future<Map<String, String>> loadUserAndPass() async {
+    var user = await FlutterSecureStorage().read(key: "username");
+    var pass = await FlutterSecureStorage().read(key: "password");
+    return {"username": user, "password": pass};
+  }
 }

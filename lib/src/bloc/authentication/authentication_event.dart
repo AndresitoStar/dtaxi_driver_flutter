@@ -48,6 +48,7 @@ class LoginAuthenticationEvent extends AuthenticationEvent {
       var user = response.results.first;
       if (user.role["name"] == "DRIVER") {
         SecureStorage.saveToken(response.results.first.token);
+        SecureStorage.saveUserAndPass(username, password);
         return new LoggedInAuthenticationState();
       } else
         return ErrorAuthenticationState("No es usuario Driver");

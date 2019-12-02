@@ -635,9 +635,11 @@ class _InboxItemState extends State<InboxItem> {
                 children: <Widget>[
                   Expanded(
                     child: OutlineButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Cancel
+                        },
                         child: Text(
-                          "DECLINAR",
+                          "CANCELAR",
                           style: TextStyle(
                               color: Colors.red,
                               fontSize: 17,
