@@ -190,6 +190,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.4.0"
+  event_bus:
+    dependency: transitive
+    description:
+      name: event_bus
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0"
   fixnum:
     dependency: transitive
     description:
@@ -375,6 +382,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.9.6+3"
+  mqtt_client:
+    dependency: "direct main"
+    description:
+      name: mqtt_client
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.6.1"
   package_config:
     dependency: transitive
     description:

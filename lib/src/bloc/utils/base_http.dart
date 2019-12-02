@@ -18,10 +18,7 @@ class BaseHttpConfig {
 
     final Link _link = _authLink.concat(_httpLink);
 
-    _clientGraph = new GraphQLClient(
-        link: _link,
-        cache: NormalizedInMemoryCache(
-            dataIdFromObject: typenameDataIdFromObject));
+    _clientGraph = new GraphQLClient(link: _link, cache: InMemoryCache());
   }
 
   GraphQLClient get graphClient => _clientGraph;

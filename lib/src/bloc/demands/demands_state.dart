@@ -1,6 +1,9 @@
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:dtaxi_driver/src/bloc/utils/list_utils.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:quiver/core.dart';
 
 @immutable
 abstract class DemandsState extends Equatable {
@@ -33,14 +36,29 @@ class InDemandsState extends DemandsState {
 
   @override
   DemandsState copyWith({List<Demand> demands, String error}) {
-    return InDemandsState(demands ?? this.demands, error: error ?? this.error);
+    return InDemandsState(demands ?? this.demands, error: error);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is InDemandsState &&
+        this.error == other.error &&
+        ListUtils.listCompare(this.demands, other.demands);
+  }
+
+  @override
+  int get hashCode {
+    return hashObjects([
+      this.demands,
+      this.error,
+    ].where((s) => s != null));
   }
 }
 
 class ErrorDemandsState extends DemandsState {
   final String errorMessage;
 
-  ErrorDemandsState(this.errorMessage);
+  ErrorDemandsState(this.errorMessage) : super([errorMessage]);
 
   @override
   String toString() => 'ErrorDemandsState';
@@ -54,7 +72,7 @@ class ErrorDemandsState extends DemandsState {
 class ErrorDemandOnDialogState extends DemandsState {
   final String errorMessage;
 
-  ErrorDemandOnDialogState(this.errorMessage);
+  ErrorDemandOnDialogState(this.errorMessage) : super([errorMessage]);
 
   @override
   String toString() => 'ErrorDemandOnDialogState';

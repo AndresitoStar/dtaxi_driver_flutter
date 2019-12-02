@@ -23,6 +23,8 @@ class IProvider<T> with DioBase {
       document: query,
       variables: data,
     ));
+    if (response.errors != null && response.errors.isNotEmpty)
+      throw response.errors.first;
     return createResponseModelFromJson(response.data, key);
   }
 
@@ -32,7 +34,14 @@ class IProvider<T> with DioBase {
       document: mutation,
       variables: data,
     ));
-    if (response.errors.isNotEmpty) throw response.errors.first;
+
+    if (response.errors != null && response.errors.isNotEmpty)
+      throw response.errors.first;
     return createResponseModelFromJson(response.data, key);
+  }
+
+  Stream<ResponseModel<T>> subscribe(String subscription, String key,
+      {Map<String, dynamic> data}) async* {
+    //client.subscribe(Opera(subscription)).map(convert);
   }
 }

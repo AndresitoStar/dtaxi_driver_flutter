@@ -1,6 +1,7 @@
 import 'package:dtaxi_driver/src/bloc/authentication/authentication_model.dart';
 import 'package:dtaxi_driver/src/bloc/utils/response_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:quiver/core.dart';
 
 part 'demands_model.g.dart';
 
@@ -11,15 +12,21 @@ class DemandsResponse extends ResponseModel<Demand> {
 
   DemandsResponse.fromJson(Map<String, dynamic> json, String key) {
     results = new List<Demand>();
-    if (json[key] != null && (json[key] as List).isNotEmpty) {
+    if (json[key] != null &&
+        json[key] is List &&
+        (json[key] as List).isNotEmpty) {
       var list = json[key] as List;
       list.forEach((d) => results.add(Demand.fromJson(d)));
+    } else if (json[key] != null &&
+        json[key] is Map &&
+        (json[key] as Map).isNotEmpty) {
+      results.add(Demand.fromJson(json[key]));
     } else
       results = [];
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(nullable: true)
 class Demand {
   final String id;
   final String date;
@@ -80,6 +87,45 @@ class Demand {
         return "ESTADO DESCONOCIDO";
         break;
     }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Demand &&
+        this.id == other.id &&
+        this.date == other.date &&
+        this.originAddress == other.originAddress &&
+        this.destinationAddress == other.destinationAddress &&
+        this.client == other.client &&
+        this.lostFound == other.lostFound &&
+        this.state == other.state &&
+        this.annotation == other.annotation &&
+        this.driverAnnotation == other.driverAnnotation &&
+        this.price == other.price &&
+        this.driver == other.driver &&
+        this.callCenterId == other.callCenterId &&
+        this.alarmTimeBefore == other.alarmTimeBefore &&
+        this.canceledType == other.canceledType;
+  }
+
+  @override
+  int get hashCode {
+    return hashObjects([
+      this.id,
+      this.date,
+      this.originAddress,
+      this.destinationAddress,
+      this.client,
+      this.lostFound,
+      this.state,
+      this.annotation,
+      this.driverAnnotation,
+      this.price,
+      this.driver,
+      this.callCenterId,
+      this.alarmTimeBefore,
+      this.canceledType,
+    ].where((s) => s != null));
   }
 }
 

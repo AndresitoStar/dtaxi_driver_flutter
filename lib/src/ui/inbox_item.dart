@@ -4,8 +4,10 @@ import 'package:intl/intl.dart';
 
 class InboxItem extends StatefulWidget {
   final Demand demand;
+  final DemandsBloc demandsBloc;
 
-  InboxItem({@required this.demand}) : assert(demand != null);
+  InboxItem({@required this.demand, @required this.demandsBloc})
+      : assert(demand != null);
 
   @override
   _InboxItemState createState() => _InboxItemState();
@@ -14,11 +16,9 @@ class InboxItem extends StatefulWidget {
 class _InboxItemState extends State<InboxItem> {
   bool details;
   String _radioReasonValue = "";
-  String _reasonDescription = "";
 
   @override
   void initState() {
-    // TODO: implement initState
     details = true;
     super.initState();
   }
@@ -45,7 +45,8 @@ class _InboxItemState extends State<InboxItem> {
 
   Widget newInboxItem(double width) {
     return Card(
-        elevation: 1,
+        margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        elevation: 3,
         child: Container(
           color: Colors.white,
           margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
@@ -153,63 +154,6 @@ class _InboxItemState extends State<InboxItem> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.phone,
-                                  size: 15,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    widget.demand.client.phone,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2, top: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.trip_origin,
-                                    size: 15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "DESDE",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.85),
-                              child: Text(
-                                widget.demand.originAddress.addressText,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            )),
                         Padding(
                             padding: const EdgeInsets.only(left: 2, top: 15),
                             child: Row(
@@ -337,19 +281,8 @@ class _InboxItemState extends State<InboxItem> {
                 children: <Widget>[
                   Expanded(
                     child: OutlineButton(
-                        onPressed: () {},
-                        child: Text(
-                          "DECLINAR",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
-                        )),
-                  ),
-                  Expanded(
-                    child: OutlineButton(
                         onPressed: () {
-                          DemandsBloc()
+                          widget.demandsBloc
                               .dispatch(AcceptDemandEvent(widget.demand.id));
                         },
                         child: Text(
@@ -369,305 +302,314 @@ class _InboxItemState extends State<InboxItem> {
 
   Widget acceptedInboxItem(double width) {
     return Card(
-        elevation: 1,
-        child: Container(
-          color: Colors.white,
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.65),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Text(
-                                  widget.demand.getState(),
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
+      elevation: 1,
+      child: Container(
+        color: Colors.white,
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.65),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Text(
+                                widget.demand.getState(),
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Text(
+                                DateFormat("dd 'de' MMMM 'del' yyyy", "es_ES")
+                                    .format(DateTime.parse(widget.demand.date))
+                                    .toString()
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 16),
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(left: 2),
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.alarm,
+                                  size: 15,
                                 ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 3),
+                                  child: Text(
+                                    DateFormat("hh:mm a", "es_ES")
+                                        .format(
+                                            DateTime.parse(widget.demand.date))
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.55),
                                 child: Text(
-                                  DateFormat("dd 'de' MMMM 'del' yyyy", "es_ES")
-                                      .format(
-                                          DateTime.parse(widget.demand.date))
-                                      .toString()
-                                      .toUpperCase(),
+                                  widget.demand.client.fullname,
                                   style: TextStyle(
+                                      color: Colors.red,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16),
+                                      fontSize: 18),
                                 ),
-                              )
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    )),
+                OutlineButton(
+                  child: details ? Text("VER MENOS") : Text("DETALLES"),
+                  onPressed: () {
+                    setState(() {
+                      details = !details;
+                    });
+                  },
+                )
+              ],
+            ),
+            details
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.phone,
+                                size: 15,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Text(
+                                  widget.demand.client.phone,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
                             ],
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 2),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.alarm,
-                                    size: 15,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 3),
-                                    child: Text(
-                                      DateFormat("hh:mm a", "es_ES")
-                                          .format(DateTime.parse(
-                                              widget.demand.date))
-                                          .toString()
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Row(
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2, top: 15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth:
-                                          MediaQuery.of(context).size.width *
-                                              0.55),
-                                  child: Text(
-                                    widget.demand.client.fullname,
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 18),
-                                  ),
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Icon(
+                                  Icons.trip_origin,
+                                  size: 15,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Text(
+                                  "DESDE",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w700),
                                 ),
                               )
                             ],
-                          ),
-                        ],
-                      )),
-                  OutlineButton(
-                    child: details ? Text("VER MENOS") : Text("DETALLES"),
-                    onPressed: () {
-                      setState(() {
-                        details = !details;
-                      });
-                    },
-                  )
-                ],
-              ),
-              details
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.phone,
-                                  size: 15,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    widget.demand.client.phone,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2, top: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.trip_origin,
-                                    size: 15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "DESDE",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.85),
-                              child: Text(
-                                widget.demand.originAddress.addressText,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2, top: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.location_on,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "HASTA",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.85),
-                              child: Text(
-                                widget.demand.destinationAddress.addressText,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            )),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.phone,
-                                  size: 15,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    widget.demand.client.phone,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2, top: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.location_on,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "HASTA",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.85),
-                              child: Text(
-                                widget.demand.destinationAddress.addressText,
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            )),
-                      ],
-                    ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: OutlineButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => Center(
-                              child: ListView(
-                                shrinkWrap: true,
-                                children: <Widget>[
-                                  AlertDialog(
-                                    title: Text("Seleccione la causa"),
-                                    content: ReasonSelector(
-                                      demandId: widget.demand.id,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.85),
+                            child: Text(
+                              widget.demand.originAddress.addressText,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
                             ),
-                          );
-                        },
-                        child: Text(
-                          "CANCELAR",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
-                        )),
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2, top: 15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 15,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Text(
+                                  "HASTA",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              )
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.85),
+                            child: Text(
+                              widget.demand.destinationAddress.addressText,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.phone,
+                                size: 15,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Text(
+                                  widget.demand.client.phone,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2, top: 15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Icon(
+                                  Icons.location_on,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 15,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Text(
+                                  "HASTA",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              )
+                            ],
+                          )),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.85),
+                            child: Text(
+                              widget.demand.destinationAddress.addressText,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )),
+                    ],
                   ),
-                ],
-              )
-            ],
-          ),
-        ));
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: OutlineButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Comenzar".toUpperCase(),
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: OutlineButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => Center(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                AlertDialog(
+                                  title: Text("Seleccione la causa"),
+                                  content: ReasonSelector(
+                                    demandId: widget.demand.id,
+                                    demandsBloc: widget.demandsBloc,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "CANCELAR",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      )),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget inProgressInboxItem(double width) {
@@ -1283,8 +1225,10 @@ class _InboxItemState extends State<InboxItem> {
 
 class ReasonSelector extends StatefulWidget {
   final String demandId;
+  final DemandsBloc demandsBloc;
 
-  const ReasonSelector({Key key, this.demandId}) : super(key: key);
+  const ReasonSelector({Key key, this.demandId, this.demandsBloc})
+      : super(key: key);
 
   @override
   _ReasonSelectorState createState() => _ReasonSelectorState();
@@ -1396,7 +1340,7 @@ class _ReasonSelectorState extends State<ReasonSelector> {
               child: OutlineButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
-                  "Cancelar".toUpperCase(),
+                  "No".toUpperCase(),
                   style: TextStyle(color: Theme.of(context).errorColor),
                 ),
               ),
@@ -1405,14 +1349,14 @@ class _ReasonSelectorState extends State<ReasonSelector> {
               child: OutlineButton(
                 onPressed: _radioReasonValue.isNotEmpty
                     ? () {
-                        DemandsBloc().dispatch(CancelDemandEvent(
+                        widget.demandsBloc.dispatch(CancelDemandEvent(
                             widget.demandId, _radioReasonValue,
                             reason: _reasonCtrl.text));
                         Navigator.of(context).pop();
                       }
                     : null,
                 child: Text(
-                  "Aceptar".toUpperCase(),
+                  "Si, Cancelar".toUpperCase(),
                 ),
               ),
             ),

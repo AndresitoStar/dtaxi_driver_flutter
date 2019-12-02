@@ -47,4 +47,11 @@ class DemandsRepository {
       if (reason != null) "reason": reason
     });
   }
+
+  Future<ResponseModel<Demand>> startDemand(String demandId) async {
+    return await _demandsProvider
+        .mutate(Mutations.startDemand, "demandStarted", data: {
+      "demandId": demandId,
+    });
+  }
 }

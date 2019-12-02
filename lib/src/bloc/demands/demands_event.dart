@@ -48,10 +48,14 @@ class AcceptDemandEvent extends DemandsEvent {
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
       var response = await _demandsRepository.acceptDemand(demandId);
-      return InDemandsState(response.results);
-    } catch (error) {
+      List<Demand> prev = (currentState as InDemandsState).demands
+        ..removeWhere((d) => d.id == response.results.first.id);
+
+      return new InDemandsState(prev);
+    } catch (error, stacktrace) {
       if (error is GraphQLError && currentState is InDemandsState)
         return currentState.copyWith(error: error.message);
+      print(stacktrace);
       return ErrorDemandsState(error?.toString());
     }
   }
@@ -73,16 +77,14 @@ class CancelDemandEvent extends DemandsEvent {
     try {
       var response = await _demandsRepository.cancelDemand(demandId, cancelType,
           reason: reason);
-      if (currentState is InDemandsState)
-        return currentState.copyWith(
-            demands: currentState.demands
-              ..removeWhere(
-                  (demand) => demand.id == response.results.first.id));
-      else
-        return InDemandsState(response.results);
-    } catch (error) {
+      List<Demand> prev = (currentState as InDemandsState).demands
+        ..remove(response.results.first);
+
+      return InDemandsState(prev);
+    } catch (error, stacktrace) {
       if (error is GraphQLError && currentState is InDemandsState)
         return currentState.copyWith(error: error.message);
+      print(stacktrace);
       return ErrorDemandsState(error?.toString());
     }
   }

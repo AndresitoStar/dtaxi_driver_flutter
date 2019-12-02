@@ -28,9 +28,9 @@ class DemandsScreenState extends State<DemandsScreen> {
 
   @override
   void initState() {
-    super.initState();
     _demandsBloc
         .dispatch(LoadDemandsEvent(demandsByDriver: widget.demandsByDriver));
+    super.initState();
   }
 
   @override
@@ -40,50 +40,55 @@ class DemandsScreenState extends State<DemandsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DemandsBloc, DemandsState>(
-        bloc: widget._demandsBloc,
-        builder: (
-          BuildContext context,
-          DemandsState currentState,
-        ) {
-          if (currentState is UnDemandsState) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (currentState is ErrorDemandsState) {
-            return Container(
-                child: Center(
-              child: Text(currentState.errorMessage ?? 'Error'),
-            ));
-          }
-          if (currentState is InDemandsState) {
-            if (currentState.error != null)
-              Future.microtask(() => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        title: Text("Bitch"),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text("OK"),
-                            onPressed: () {
-                              _demandsBloc.dispatch(LoadDemandsEvent(
-                                  demandsByDriver: widget.demandsByDriver));
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      )));
-            return ListView.builder(
-              itemCount: currentState.demands.length,
-              itemBuilder: (context, index) {
-                return InboxItem(
-                  demand: currentState.demands[index],
-                );
-              },
-            );
-          }
-          return Container();
-        });
+    return Scaffold(
+      backgroundColor: Colors.grey.shade300,
+      body: BlocBuilder<DemandsBloc, DemandsState>(
+          bloc: widget._demandsBloc,
+          builder: (
+            BuildContext context,
+            DemandsState currentState,
+          ) {
+            if (currentState is UnDemandsState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (currentState is ErrorDemandsState) {
+              return Container(
+                  child: Center(
+                child: Text(currentState.errorMessage ?? 'Error'),
+              ));
+            }
+            if (currentState is InDemandsState) {
+              if (currentState.error != null)
+                Future.microtask(() => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text("Error"),
+                          content: Text(currentState.error),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("OK"),
+                              onPressed: () {
+                                _demandsBloc.dispatch(LoadDemandsEvent(
+                                    demandsByDriver: widget.demandsByDriver));
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        )));
+              return ListView.builder(
+                itemCount: currentState.demands.length,
+                itemBuilder: (context, index) {
+                  return InboxItem(
+                    demand: currentState.demands[index],
+                    demandsBloc: widget._demandsBloc,
+                  );
+                },
+              );
+            }
+            return Container();
+          }),
+    );
   }
 }

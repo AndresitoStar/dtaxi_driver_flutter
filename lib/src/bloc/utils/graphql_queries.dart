@@ -62,6 +62,15 @@ mutation cancelDemand (\$demandId: ID!, \$reason: String, \$canceledType: Cancel
     }
  }
   """;
+
+  static const startDemand = Fragments.demandResults +
+      """
+  mutation startDemand (\$demandId: ID!){
+   demandStarted (demandId:\$demandId) {
+     ...results
+   }
+ }
+  """;
 }
 
 class Fragments {
