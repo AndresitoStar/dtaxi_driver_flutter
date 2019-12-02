@@ -3,7 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'base_http.dart';
 import 'response_model.dart';
 
-typedef CreateModelFromJson = dynamic Function(Map<String, dynamic> json);
+typedef CreateModelFromJson = dynamic Function(
+    Map<String, dynamic> json, String key);
 typedef CreateJsonFromModel<T> = Map<String, dynamic> Function(T model);
 
 class IProvider<T> with DioBase {
@@ -16,22 +17,22 @@ class IProvider<T> with DioBase {
   CreateModelFromJson createModelFromJson;
   CreateModelFromJson createResponseModelFromJson;
 
-  Future<ResponseModel<T>> query(String query,
+  Future<ResponseModel<T>> query(String query, String key,
       {Map<String, dynamic> data}) async {
     var response = await client.query(QueryOptions(
       document: query,
       variables: data,
     ));
-    return createResponseModelFromJson(response.data);
+    return createResponseModelFromJson(response.data, key);
   }
 
-  Future<ResponseModel<T>> mutate(String mutation,
+  Future<ResponseModel<T>> mutate(String mutation, String key,
       {Map<String, dynamic> data}) async {
     var response = await client.mutate(MutationOptions(
       document: mutation,
       variables: data,
     ));
     if (response.errors.isNotEmpty) throw response.errors.first;
-    return createResponseModelFromJson(response.data);
+    return createResponseModelFromJson(response.data, key);
   }
 }

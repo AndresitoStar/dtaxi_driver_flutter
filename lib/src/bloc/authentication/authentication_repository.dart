@@ -12,7 +12,7 @@ class AuthenticationRepository {
 
   Future<ResponseModel<AuthenticationModel>> login(
       String username, String password) {
-    return _authenticationProvider.query(Queries.login,
+    return _authenticationProvider.query(Queries.login, "login",
         data: {"usernameOrEmail": username, "password": password});
   }
 }

@@ -56,7 +56,7 @@ class Mutations {
   """;
 
   static const cancelDemand = """
-mutation cancelDemandByDriver (\$demandId: ID!, \$reason: String, \$canceledType: CanceledType!){
+mutation cancelDemand (\$demandId: ID!, \$reason: String, \$canceledType: CanceledType!){
     cancelDemandByDriver(demandId:\$demandId, reason:\$reason, canceledType:\$canceledType) {
       id
     }

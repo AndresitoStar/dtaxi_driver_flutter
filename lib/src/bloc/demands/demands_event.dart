@@ -73,7 +73,13 @@ class CancelDemandEvent extends DemandsEvent {
     try {
       var response = await _demandsRepository.cancelDemand(demandId, cancelType,
           reason: reason);
-      return InDemandsState(response.results);
+      if (currentState is InDemandsState)
+        return currentState.copyWith(
+            demands: currentState.demands
+              ..removeWhere(
+                  (demand) => demand.id == response.results.first.id));
+      else
+        return InDemandsState(response.results);
     } catch (error) {
       if (error is GraphQLError && currentState is InDemandsState)
         return currentState.copyWith(error: error.message);

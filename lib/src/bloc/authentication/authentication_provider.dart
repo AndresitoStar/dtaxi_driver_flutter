@@ -5,10 +5,10 @@ import 'index.dart';
 class AuthenticationProvider extends IProvider<AuthenticationModel> {
   AuthenticationProvider()
       : super(
-          createModelFromJson: (json) =>
-              AuthenticationResponse.fromJson(json).results,
-          createResponseModelFromJson: (json) =>
-              AuthenticationResponse.fromJson(json),
+          createModelFromJson: (json, key) =>
+              AuthenticationResponse.fromJson(json, key).results,
+          createResponseModelFromJson: (json, key) =>
+              AuthenticationResponse.fromJson(json, key),
           createJsonFromModel: (AuthenticationModel model) => model.toJson(),
         );
 }

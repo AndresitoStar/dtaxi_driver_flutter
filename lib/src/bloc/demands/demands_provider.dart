@@ -5,8 +5,10 @@ import 'demands_model.dart';
 class DemandsProvider extends IProvider<Demand> {
   DemandsProvider()
       : super(
-          createModelFromJson: (json) => DemandsResponse.fromJson(json).results,
-          createResponseModelFromJson: (json) => DemandsResponse.fromJson(json),
+          createModelFromJson: (json, key) =>
+              DemandsResponse.fromJson(json, key).results,
+          createResponseModelFromJson: (json, key) =>
+              DemandsResponse.fromJson(json, key),
           createJsonFromModel: (Demand model) => model.toJson(),
         );
 }

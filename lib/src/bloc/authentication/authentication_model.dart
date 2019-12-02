@@ -9,9 +9,9 @@ class AuthenticationResponse extends ResponseModel<AuthenticationModel> {
 
   AuthenticationResponse({this.results});
 
-  AuthenticationResponse.fromJson(Map<String, dynamic> json) {
-    if (json['login'] != null) {
-      results = [AuthenticationModel.fromJson(json['login'])];
+  AuthenticationResponse.fromJson(Map<String, dynamic> json, String key) {
+    if (json[key] != null) {
+      results = [AuthenticationModel.fromJson(json[key])];
     } else
       results = [];
   }

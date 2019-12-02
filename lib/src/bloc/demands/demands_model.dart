@@ -9,15 +9,10 @@ class DemandsResponse extends ResponseModel<Demand> {
 
   DemandsResponse({this.results});
 
-  DemandsResponse.fromJson(Map<String, dynamic> json) {
+  DemandsResponse.fromJson(Map<String, dynamic> json, String key) {
     results = new List<Demand>();
-    if (json['demandsByStatesV2'] != null &&
-        (json['demandsByStatesV2'] as List).isNotEmpty) {
-      var list = json['demandsByStatesV2'] as List;
-      list.forEach((d) => results.add(Demand.fromJson(d)));
-    } else if (json['demandsByStatesWithoutDate'] != null &&
-        (json['demandsByStatesWithoutDate'] as List).isNotEmpty) {
-      var list = json['demandsByStatesWithoutDate'] as List;
+    if (json[key] != null && (json[key] as List).isNotEmpty) {
+      var list = json[key] as List;
       list.forEach((d) => results.add(Demand.fromJson(d)));
     } else
       results = [];

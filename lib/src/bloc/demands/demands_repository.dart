@@ -9,7 +9,8 @@ class DemandsRepository {
 
   Future<ResponseModel<Demand>> loadPendingDemands(
       {List<String> demandStates}) async {
-    return await _demandsProvider.query(Queries.demandsList, data: {
+    return await _demandsProvider
+        .query(Queries.demandsList, "demandsByStatesV2", data: {
       "states": demandStates ??
           [
             DemandType.SENT,
@@ -20,7 +21,8 @@ class DemandsRepository {
 
   Future<ResponseModel<Demand>> loadDemandsByDriver(
       {List<String> demandStates}) async {
-    return await _demandsProvider.query(Queries.demandsByDriver, data: {
+    return await _demandsProvider
+        .query(Queries.demandsByDriver, "demandsByStatesWithoutDate", data: {
       "states": demandStates ??
           [
             DemandType.ACCEPTED,
@@ -31,13 +33,15 @@ class DemandsRepository {
   }
 
   Future<ResponseModel<Demand>> acceptDemand(String demandId) async {
-    return await _demandsProvider
-        .mutate(Mutations.acceptDemand, data: {"demandId": demandId});
+    return await _demandsProvider.mutate(
+        Mutations.acceptDemand, "demandAccepted",
+        data: {"demandId": demandId});
   }
 
   Future<ResponseModel<Demand>> cancelDemand(String demandId, String cancelType,
       {String reason}) async {
-    return await _demandsProvider.mutate(Mutations.cancelDemand, data: {
+    return await _demandsProvider
+        .mutate(Mutations.cancelDemand, "cancelDemandByDriver", data: {
       "demandId": demandId,
       "canceledType": cancelType,
       if (reason != null) "reason": reason
