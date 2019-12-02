@@ -31,6 +31,7 @@ class IProvider<T> with DioBase {
       document: mutation,
       variables: data,
     ));
+    if (response.errors.isNotEmpty) throw response.errors.first;
     return createResponseModelFromJson(response.data);
   }
 }

@@ -14,12 +14,12 @@ class _AssignedInboxState extends State<AssignedInbox> {
   @override
   void initState() {
     items = <InboxItem>[
-      InboxItem(status: InboxStatus.ASSIGNED),
-      InboxItem(status: InboxStatus.ASSIGNED),
-      InboxItem(status: InboxStatus.IN_PROGRESS),
-      InboxItem(status: InboxStatus.ASSIGNED),
-      InboxItem(status: InboxStatus.IN_PROGRESS),
-      InboxItem(status: InboxStatus.ACCEPTED),
+//      InboxItem(status: InboxStatus.ASSIGNED),
+//      InboxItem(status: InboxStatus.ASSIGNED),
+//      InboxItem(status: InboxStatus.IN_PROGRESS),
+//      InboxItem(status: InboxStatus.ASSIGNED),
+//      InboxItem(status: InboxStatus.IN_PROGRESS),
+//      InboxItem(status: InboxStatus.ACCEPTED),
     ];
     super.initState();
   }

@@ -1,3 +1,4 @@
+import 'package:dtaxi_driver/src/common/theme_data.dart';
 import 'package:flutter/material.dart';
 
 typedef LoginCallback(String username, String password);
@@ -28,9 +29,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(brightness: Brightness.dark),
-      child: Container(
+    return MaterialApp(
+      theme: dtaxiThemeDataDark,
+      home: Container(
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[

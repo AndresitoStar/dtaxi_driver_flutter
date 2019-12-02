@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -12,6 +13,10 @@ abstract class DemandsEvent {
 }
 
 class LoadDemandsEvent extends DemandsEvent {
+  final bool demandsByDriver;
+
+  LoadDemandsEvent({this.demandsByDriver = false});
+
   @override
   String toString() => 'LoadDemandsEvent';
 
@@ -19,7 +24,9 @@ class LoadDemandsEvent extends DemandsEvent {
   Future<DemandsState> applyAsync(
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
-      var response = await _demandsRepository.loadPendingDemands();
+      var response = demandsByDriver
+          ? await _demandsRepository.loadDemandsByDriver()
+          : await _demandsRepository.loadPendingDemands();
       return InDemandsState(response.results);
     } catch (_, stackTrace) {
       print('$_ $stackTrace');
@@ -42,9 +49,10 @@ class AcceptDemandEvent extends DemandsEvent {
     try {
       var response = await _demandsRepository.acceptDemand(demandId);
       return InDemandsState(response.results);
-    } catch (_, stackTrace) {
-      print('$_ $stackTrace');
-      return ErrorDemandsState(_?.toString());
+    } catch (error) {
+      if (error is GraphQLError && currentState is InDemandsState)
+        return currentState.copyWith(error: error.message);
+      return ErrorDemandsState(error?.toString());
     }
   }
 }

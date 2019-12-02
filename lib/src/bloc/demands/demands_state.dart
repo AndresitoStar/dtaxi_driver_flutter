@@ -24,15 +24,16 @@ class UnDemandsState extends DemandsState {
 /// Initialized
 class InDemandsState extends DemandsState {
   final List<Demand> demands;
+  final String error;
 
-  InDemandsState(this.demands) : super([demands]);
+  InDemandsState(this.demands, {this.error}) : super([demands, error]);
 
   @override
   String toString() => 'InDemandsState';
 
   @override
-  DemandsState copyWith({List<Demand> demands}) {
-    return InDemandsState(demands ?? this.demands);
+  DemandsState copyWith({List<Demand> demands, String error}) {
+    return InDemandsState(demands ?? this.demands, error: error ?? this.error);
   }
 }
 
@@ -47,5 +48,19 @@ class ErrorDemandsState extends DemandsState {
   @override
   DemandsState copyWith() {
     return ErrorDemandsState(this.errorMessage);
+  }
+}
+
+class ErrorDemandOnDialogState extends DemandsState {
+  final String errorMessage;
+
+  ErrorDemandOnDialogState(this.errorMessage);
+
+  @override
+  String toString() => 'ErrorDemandOnDialogState';
+
+  @override
+  DemandsState copyWith() {
+    return ErrorDemandOnDialogState(this.errorMessage);
   }
 }

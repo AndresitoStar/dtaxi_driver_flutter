@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DemandsScreen extends StatefulWidget {
   const DemandsScreen(
-      {Key key, @required DemandsBloc demandsBloc, this.demandTypes})
+      {Key key,
+      @required DemandsBloc demandsBloc,
+      this.demandsByDriver = false})
       : _demandsBloc = demandsBloc,
         super(key: key);
 
   final DemandsBloc _demandsBloc;
-  final List<String> demandTypes;
+  final bool demandsByDriver;
 
   @override
   DemandsScreenState createState() {
@@ -27,7 +29,8 @@ class DemandsScreenState extends State<DemandsScreen> {
   @override
   void initState() {
     super.initState();
-    this._demandsBloc.dispatch(LoadDemandsEvent());
+    _demandsBloc
+        .dispatch(LoadDemandsEvent(demandsByDriver: widget.demandsByDriver));
   }
 
   @override
@@ -55,12 +58,27 @@ class DemandsScreenState extends State<DemandsScreen> {
             ));
           }
           if (currentState is InDemandsState) {
+            if (currentState.error != null)
+              Future.microtask(() => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text("Bitch"),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text("OK"),
+                            onPressed: () {
+                              _demandsBloc.dispatch(LoadDemandsEvent(
+                                  demandsByDriver: widget.demandsByDriver));
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      )));
             return ListView.builder(
               itemCount: currentState.demands.length,
               itemBuilder: (context, index) {
                 return InboxItem(
                   demand: currentState.demands[index],
-                  status: InboxStatus.SENT,
                 );
               },
             );

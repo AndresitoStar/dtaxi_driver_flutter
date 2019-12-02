@@ -3,10 +3,7 @@ import 'package:dtaxi_driver/src/common/app_drawer.dart';
 import 'package:dtaxi_driver/src/common/app_scaffold.dart';
 import 'package:flutter/material.dart';
 
-import 'accepted_inbox.dart';
-import 'asigned_inbox.dart';
-
-enum HomepageTab { INBOX, ASSIGNED, ACCEPTED }
+enum HomepageTab { INBOX, ACCEPTED }
 
 class _Page {
   const _Page({this.text, @required this.child});
@@ -34,23 +31,24 @@ class _HomepageState extends State<Homepage>
         child: DemandsScreen(
           demandsBloc: DemandsBloc(),
         )),
-    _Page(text: "Asignados", child: AssignedInbox()),
-    _Page(text: "Aceptados", child: AcceptedInbox())
+    _Page(
+        text: "Aceptados",
+        child: DemandsScreen(
+          demandsBloc: DemandsBloc(),
+          demandsByDriver: true,
+        ))
   ];
 
   @override
   void initState() {
-    _controller = TabController(vsync: this, length: 3);
+    _controller = TabController(vsync: this, length: _allPages.length);
     if (widget.tab != null) {
       switch (widget.tab) {
         case HomepageTab.INBOX:
           _controller.animateTo(0);
           break;
-        case HomepageTab.ASSIGNED:
-          _controller.animateTo(1);
-          break;
         case HomepageTab.ACCEPTED:
-          _controller.animateTo(2);
+          _controller.animateTo(1);
           break;
         default:
           break;
@@ -71,7 +69,7 @@ class _HomepageState extends State<Homepage>
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorColor: Colors.white,
             controller: _controller,
-            isScrollable: true,
+            isScrollable: false,
             tabs: _allPages.map<Container>((_Page page) {
               return Container(
                 height: 40.0,

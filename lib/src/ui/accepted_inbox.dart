@@ -14,11 +14,11 @@ class _AcceptedInboxState extends State<AcceptedInbox> {
   @override
   void initState() {
     items = <InboxItem>[
-      InboxItem(status: InboxStatus.ACCEPTED),
-      InboxItem(status: InboxStatus.IN_PROGRESS),
-      InboxItem(status: InboxStatus.IN_PROGRESS),
-      InboxItem(status: InboxStatus.ACCEPTED),
-      InboxItem(status: InboxStatus.ACCEPTED),
+//      InboxItem(status: InboxStatus.ACCEPTED),
+//      InboxItem(status: InboxStatus.IN_PROGRESS),
+//      InboxItem(status: InboxStatus.IN_PROGRESS),
+//      InboxItem(status: InboxStatus.ACCEPTED),
+//      InboxItem(status: InboxStatus.ACCEPTED),
     ];
     super.initState();
   }

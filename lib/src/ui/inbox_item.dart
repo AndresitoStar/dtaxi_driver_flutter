@@ -2,13 +2,10 @@ import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-enum InboxStatus { SENT, ACCEPTED, IN_PROGRESS, ASSIGNED }
-
 class InboxItem extends StatefulWidget {
-  final InboxStatus status;
   final Demand demand;
 
-  InboxItem({this.status, @required this.demand}) : assert(demand != null);
+  InboxItem({@required this.demand}) : assert(demand != null);
 
   @override
   _InboxItemState createState() => _InboxItemState();
@@ -27,16 +24,17 @@ class _InboxItemState extends State<InboxItem> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    switch (widget.status) {
-      case InboxStatus.SENT:
+    switch (widget.demand.state) {
+      case DemandType.PENDING:
+      case DemandType.SENDED:
         return newInboxItem(width);
         break;
-      case InboxStatus.ACCEPTED:
+      case DemandType.ACCEPTED:
         return acceptedInboxItem(width);
         break;
-      case InboxStatus.IN_PROGRESS:
+      case DemandType.IN_COURSE:
         return inProgressInboxItem(width);
-      case InboxStatus.ASSIGNED:
+      case DemandType.ASSIGNED:
         return assignedInboxItem(width);
         break;
     }
@@ -390,7 +388,7 @@ class _InboxItemState extends State<InboxItem> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "ACEPTADO",
+                                  widget.demand.getState(),
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontSize: 13,
@@ -404,7 +402,11 @@ class _InboxItemState extends State<InboxItem> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "08 DE DICIEMBRE DEL 2017",
+                                  DateFormat("dd 'de' MMMM 'del' yyyy", "es_ES")
+                                      .format(
+                                          DateTime.parse(widget.demand.date))
+                                      .toString()
+                                      .toUpperCase(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16),
@@ -423,7 +425,11 @@ class _InboxItemState extends State<InboxItem> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 3),
                                     child: Text(
-                                      "03:00 PM",
+                                      DateFormat("hh:mm a", "es_ES")
+                                          .format(DateTime.parse(
+                                              widget.demand.date))
+                                          .toString()
+                                          .toUpperCase(),
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500),
@@ -441,7 +447,7 @@ class _InboxItemState extends State<InboxItem> {
                                           MediaQuery.of(context).size.width *
                                               0.55),
                                   child: Text(
-                                    "Eduardo Mustelier Martínez",
+                                    widget.demand.client.fullname,
                                     style: TextStyle(
                                         color: Colors.red,
                                         fontWeight: FontWeight.w700,
@@ -465,6 +471,7 @@ class _InboxItemState extends State<InboxItem> {
               ),
               details
                   ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
                             padding: const EdgeInsets.only(left: 2),
@@ -477,7 +484,7 @@ class _InboxItemState extends State<InboxItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 3),
                                   child: Text(
-                                    "53 307651",
+                                    widget.demand.client.phone,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
@@ -516,7 +523,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.originAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500),
@@ -554,7 +561,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.destinationAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500),
@@ -563,6 +570,7 @@ class _InboxItemState extends State<InboxItem> {
                       ],
                     )
                   : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
                             padding: const EdgeInsets.only(left: 2),
@@ -575,7 +583,7 @@ class _InboxItemState extends State<InboxItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 3),
                                   child: Text(
-                                    "53 307651",
+                                    widget.demand.client.phone,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
@@ -615,7 +623,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.destinationAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500),
