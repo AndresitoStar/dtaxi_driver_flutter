@@ -19,7 +19,28 @@ class LoadDemandsEvent extends DemandsEvent {
   Future<DemandsState> applyAsync(
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
-      var response = await this._demandsRepository.loadDemands();
+      var response = await _demandsRepository.loadPendingDemands();
+      return InDemandsState(response.results);
+    } catch (_, stackTrace) {
+      print('$_ $stackTrace');
+      return ErrorDemandsState(_?.toString());
+    }
+  }
+}
+
+class AcceptDemandEvent extends DemandsEvent {
+  final String demandId;
+
+  AcceptDemandEvent(this.demandId);
+
+  @override
+  String toString() => 'AcceptDemandEvent';
+
+  @override
+  Future<DemandsState> applyAsync(
+      {DemandsState currentState, DemandsBloc bloc}) async {
+    try {
+      var response = await _demandsRepository.acceptDemand(demandId);
       return InDemandsState(response.results);
     } catch (_, stackTrace) {
       print('$_ $stackTrace');

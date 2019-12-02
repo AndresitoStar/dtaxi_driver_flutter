@@ -2,7 +2,7 @@ import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-enum InboxStatus { NEWS, ACCEPTED, IN_PROGRESS, ASSIGNED }
+enum InboxStatus { SENT, ACCEPTED, IN_PROGRESS, ASSIGNED }
 
 class InboxItem extends StatefulWidget {
   final InboxStatus status;
@@ -28,7 +28,7 @@ class _InboxItemState extends State<InboxItem> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     switch (widget.status) {
-      case InboxStatus.NEWS:
+      case InboxStatus.SENT:
         return newInboxItem(width);
         break;
       case InboxStatus.ACCEPTED:
@@ -66,11 +66,12 @@ class _InboxItemState extends State<InboxItem> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "NUEVO",
+                                  widget.demand.getState(),
                                   style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
+                                    color: Colors.red,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               )
                             ],
@@ -84,7 +85,8 @@ class _InboxItemState extends State<InboxItem> {
                                       .format(
                                           DateTime.parse(widget.demand.date))
                                       .toString()
-                                      .toUpperCase(), // "08 DE DICIEMBRE DEL 2017",
+                                      .toUpperCase(),
+                                  // "08 DE DICIEMBRE DEL 2017",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16),
@@ -276,7 +278,8 @@ class _InboxItemState extends State<InboxItem> {
                                             maxWidth: (width - 60) / 2,
                                           ),
                                           child: Text(
-                                            "10 Octubre",
+                                            widget.demand.originAddress
+                                                .addressText,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
                                                 fontSize: 18,
@@ -315,7 +318,8 @@ class _InboxItemState extends State<InboxItem> {
                                             maxWidth: (width - 60) / 2,
                                           ),
                                           child: Text(
-                                            "10 Octubre",
+                                            widget.demand.destinationAddress
+                                                .addressText,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
                                                 fontSize: 18,
@@ -344,7 +348,10 @@ class _InboxItemState extends State<InboxItem> {
                   ),
                   Expanded(
                     child: OutlineButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          DemandsBloc()
+                              .dispatch(AcceptDemandEvent(widget.demand.id));
+                        },
                         child: Text(
                           "ACEPTAR",
                           style: TextStyle(

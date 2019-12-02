@@ -1,4 +1,5 @@
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:dtaxi_driver/src/bloc/utils/graphql_queries.dart';
 import 'package:dtaxi_driver/src/bloc/utils/response_model.dart';
 
 class DemandsRepository {
@@ -6,48 +7,32 @@ class DemandsRepository {
 
   DemandsRepository();
 
-  Future<ResponseModel<Demand>> loadDemands({List<String> demandStates}) async {
-    return await _demandsProvider.findAll("""
-        query DemandList(\$states: [DemandState]){
-           demandsByStatesV2(                    
-             states: \$states                     
-            ){                                   
-              id                    
-              date                  
-              originAddress {       
-                  addressText       
-                  latitude          
-                  longitude         
-              }                     
-              destinationAddress {  
-                  addressText       
-                  latitude          
-                  longitude         
-              }                     
-              client{               
-                  id                
-                  fullname          
-                  phone             
-              }                     
-              lostFound{            
-                 description        
-              }                     
-              state                 
-              annotation            
-              driverAnnotation      
-              price                 
-              driver{               
-                  name              
-                  userId            
-                                    
-              }                     
-              callCenterId          
-              alarmTimeBefore       
-              canceledType                                   
-            }                                    
-          }                                        
-         """, data: {
-      "states": demandStates ?? [DemandType.SENDED]
+  Future<ResponseModel<Demand>> loadPendingDemands(
+      {List<String> demandStates}) async {
+    return await _demandsProvider.query(Queries.demandsList, data: {
+      "states": demandStates ??
+          [
+            DemandType.SENDED,
+            DemandType.PENDING,
+          ]
     });
+  }
+
+  Future<ResponseModel<Demand>> loadDemandsByDriver(
+      {List<String> demandStates}) async {
+    return await _demandsProvider.query(Queries.demandsByDriver, data: {
+      "states": demandStates ??
+          [
+            DemandType.ACCEPTED,
+            DemandType.ASSIGNED,
+            DemandType.IN_COURSE,
+            DemandType.IN_COURSE,
+          ]
+    });
+  }
+
+  Future<ResponseModel<Demand>> acceptDemand(String demandId) async {
+    return await _demandsProvider
+        .mutate(Mutations.acceptDemand, data: {"demandId": demandId});
   }
 }

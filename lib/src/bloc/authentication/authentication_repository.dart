@@ -1,3 +1,4 @@
+import 'package:dtaxi_driver/src/bloc/utils/graphql_queries.dart';
 import 'package:dtaxi_driver/src/bloc/utils/response_model.dart';
 
 import 'authentication_provider.dart';
@@ -11,28 +12,7 @@ class AuthenticationRepository {
 
   Future<ResponseModel<AuthenticationModel>> login(
       String username, String password) {
-    return _authenticationProvider.findAll("""
-        query login(\$usernameOrEmail: String!, \$password: String!) {
-          login(usernameOrEmail: \$usernameOrEmail, password: \$password) {
-          token
-            username
-            fullname
-            email
-            role {
-                name
-            }
-            id
-            phone
-            profileImageId
-            driver{
-              id
-              name
-              score
-              userId
-              phone
-            }
-          }
-        }
-         """, data: {"usernameOrEmail": username, "password": password});
+    return _authenticationProvider.query(Queries.login,
+        data: {"usernameOrEmail": username, "password": password});
   }
 }

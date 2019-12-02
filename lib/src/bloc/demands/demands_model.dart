@@ -15,6 +15,10 @@ class DemandsResponse extends ResponseModel<Demand> {
         (json['demandsByStatesV2'] as List).isNotEmpty) {
       var list = json['demandsByStatesV2'] as List;
       list.forEach((d) => results.add(Demand.fromJson(d)));
+    } else if (json['demandsByStatesWithoutDate'] != null &&
+        (json['demandsByStatesWithoutDate'] as List).isNotEmpty) {
+      var list = json['demandsByStatesWithoutDate'] as List;
+      list.forEach((d) => results.add(Demand.fromJson(d)));
     } else
       results = [];
   }
@@ -54,7 +58,34 @@ class Demand {
       this.canceledType);
 
   factory Demand.fromJson(Map<String, dynamic> json) => _$DemandFromJson(json);
+
   Map<String, dynamic> toJson() => _$DemandToJson(this);
+
+  String getState() {
+    switch (state) {
+      case DemandType.PENDING:
+        return "PENDIENTE";
+        break;
+      case DemandType.ASSIGNED:
+        return "ASIGNADA";
+        break;
+      case DemandType.ACCEPTED:
+        return "ACEPTADA";
+        break;
+      case DemandType.SENDED:
+        return "NUEVO";
+        break;
+      case DemandType.CANCELED:
+        return "CANCELADA";
+        break;
+      case DemandType.IN_COURSE:
+        return "EN CURSO";
+        break;
+      default:
+        return "ESTADO DESCONOCIDO";
+        break;
+    }
+  }
 }
 
 @JsonSerializable()
@@ -67,6 +98,7 @@ class DemandAddress {
 
   factory DemandAddress.fromJson(Map<String, dynamic> json) =>
       _$DemandAddressFromJson(json);
+
   Map<String, dynamic> toJson() => _$DemandAddressToJson(this);
 }
 
@@ -79,6 +111,7 @@ class Client {
   Client(this.id, this.fullname, this.phone);
 
   factory Client.fromJson(Map<String, dynamic> json) => _$ClientFromJson(json);
+
   Map<String, dynamic> toJson() => _$ClientToJson(this);
 }
 

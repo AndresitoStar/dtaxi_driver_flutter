@@ -14,7 +14,7 @@ class _AllInboxState extends State<AllInbox> {
   @override
   void initState() {
     items = <InboxItem>[
-      InboxItem(status: InboxStatus.NEWS),
+      InboxItem(status: InboxStatus.SENT),
       InboxItem(status: InboxStatus.ACCEPTED),
       InboxItem(status: InboxStatus.IN_PROGRESS),
       InboxItem(status: InboxStatus.ASSIGNED),

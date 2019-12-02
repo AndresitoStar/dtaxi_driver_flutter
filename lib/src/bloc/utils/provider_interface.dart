@@ -16,10 +16,21 @@ class IProvider<T> with DioBase {
   CreateModelFromJson createModelFromJson;
   CreateModelFromJson createResponseModelFromJson;
 
-  Future<ResponseModel<T>> findAll(String query,
+  Future<ResponseModel<T>> query(String query,
       {Map<String, dynamic> data}) async {
-    var response =
-        await client.query(QueryOptions(document: query, variables: data));
+    var response = await client.query(QueryOptions(
+      document: query,
+      variables: data,
+    ));
+    return createResponseModelFromJson(response.data);
+  }
+
+  Future<ResponseModel<T>> mutate(String mutation,
+      {Map<String, dynamic> data}) async {
+    var response = await client.mutate(MutationOptions(
+      document: mutation,
+      variables: data,
+    ));
     return createResponseModelFromJson(response.data);
   }
 }

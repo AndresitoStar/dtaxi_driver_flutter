@@ -60,7 +60,7 @@ class DemandsScreenState extends State<DemandsScreen> {
               itemBuilder: (context, index) {
                 return InboxItem(
                   demand: currentState.demands[index],
-                  status: InboxStatus.NEWS,
+                  status: InboxStatus.SENT,
                 );
               },
             );
