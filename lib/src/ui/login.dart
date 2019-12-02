@@ -1,5 +1,6 @@
 import 'package:dtaxi_driver/src/common/theme_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/services/system_chrome.dart';
 
 typedef LoginCallback(String username, String password);
 
@@ -24,6 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     _userCtrl = new TextEditingController();
     _passCtrl = new TextEditingController();
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.white));
     super.initState();
   }
 
@@ -44,11 +47,12 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Icon(Icons.local_taxi, size: 80, color: Colors.white),
-                  Text(
-                    "D'TAXI",
-                    style: TextStyle(fontSize: 30, color: Colors.white),
-                  ),
+                  Container(
+                      height: 150,
+                      child: Image.asset(
+                        "assets/images/logo.png",
+                        height: 150,
+                      )),
                   Form(
                       key: _formKey,
                       child: Column(

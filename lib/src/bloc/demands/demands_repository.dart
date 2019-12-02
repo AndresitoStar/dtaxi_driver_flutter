@@ -26,7 +26,6 @@ class DemandsRepository {
             DemandType.ACCEPTED,
             DemandType.ASSIGNED,
             DemandType.IN_COURSE,
-            DemandType.IN_COURSE,
           ]
     });
   }

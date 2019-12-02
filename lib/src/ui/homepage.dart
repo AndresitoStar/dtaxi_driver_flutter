@@ -27,7 +27,7 @@ class _HomepageState extends State<Homepage>
   TabController _controller;
   final List<_Page> _allPages = <_Page>[
     _Page(
-        text: "Todos",
+        text: "Pendientes",
         child: DemandsScreen(
           demandsBloc: DemandsBloc(),
         )),

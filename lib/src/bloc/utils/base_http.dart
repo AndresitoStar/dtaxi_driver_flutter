@@ -11,7 +11,8 @@ class BaseHttpConfig {
   static final BaseHttpConfig _baseHttpConfig = new BaseHttpConfig._internal();
 
   BaseHttpConfig._internal() {
-    final HttpLink _httpLink = HttpLink(uri: "http://10.0.0.131/api/graphql");
+    final HttpLink _httpLink =
+        HttpLink(uri: "http://dtaxi.pyxel.cu/api/graphql");
     final AuthLink _authLink =
         AuthLink(getToken: () async => await SecureStorage.getToken());
 
