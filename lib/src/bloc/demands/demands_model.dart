@@ -25,7 +25,7 @@ class Demand {
   final String id;
   final String date;
   final DemandAddress originAddress;
-  final DemandAddress destination;
+  final DemandAddress destinationAddress;
   final Client client;
   final Map lostFound;
   final String state;
@@ -41,7 +41,7 @@ class Demand {
       this.id,
       this.date,
       this.originAddress,
-      this.destination,
+      this.destinationAddress,
       this.client,
       this.lostFound,
       this.state,

@@ -13,9 +13,10 @@ Demand _$DemandFromJson(Map<String, dynamic> json) {
     json['originAddress'] == null
         ? null
         : DemandAddress.fromJson(json['originAddress'] as Map<String, dynamic>),
-    json['destination'] == null
+    json['destinationAddress'] == null
         ? null
-        : DemandAddress.fromJson(json['destination'] as Map<String, dynamic>),
+        : DemandAddress.fromJson(
+            json['destinationAddress'] as Map<String, dynamic>),
     json['client'] == null
         ? null
         : Client.fromJson(json['client'] as Map<String, dynamic>),
@@ -37,7 +38,7 @@ Map<String, dynamic> _$DemandToJson(Demand instance) => <String, dynamic>{
       'id': instance.id,
       'date': instance.date,
       'originAddress': instance.originAddress,
-      'destination': instance.destination,
+      'destinationAddress': instance.destinationAddress,
       'client': instance.client,
       'lostFound': instance.lostFound,
       'state': instance.state,

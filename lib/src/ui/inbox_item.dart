@@ -1,11 +1,14 @@
+import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 enum InboxStatus { NEWS, ACCEPTED, IN_PROGRESS, ASSIGNED }
 
 class InboxItem extends StatefulWidget {
   final InboxStatus status;
+  final Demand demand;
 
-  InboxItem({this.status});
+  InboxItem({this.status, @required this.demand}) : assert(demand != null);
 
   @override
   _InboxItemState createState() => _InboxItemState();
@@ -77,7 +80,11 @@ class _InboxItemState extends State<InboxItem> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "08 DE DICIEMBRE DEL 2017",
+                                  DateFormat("dd 'de' MMMM 'del' yyyy", "es_ES")
+                                      .format(
+                                          DateTime.parse(widget.demand.date))
+                                      .toString()
+                                      .toUpperCase(), // "08 DE DICIEMBRE DEL 2017",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16),
@@ -96,7 +103,11 @@ class _InboxItemState extends State<InboxItem> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 3),
                                     child: Text(
-                                      "03:00 PM",
+                                      DateFormat("hh:mm a", "es_ES")
+                                          .format(DateTime.parse(
+                                              widget.demand.date))
+                                          .toString()
+                                          .toUpperCase(),
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500),
@@ -114,7 +125,7 @@ class _InboxItemState extends State<InboxItem> {
                                           MediaQuery.of(context).size.width *
                                               0.55),
                                   child: Text(
-                                    "Eduardo Mustelier Martínez",
+                                    widget.demand.client.fullname,
                                     style: TextStyle(
                                         color: Colors.red,
                                         fontWeight: FontWeight.w700,
@@ -138,6 +149,7 @@ class _InboxItemState extends State<InboxItem> {
               ),
               details
                   ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
                             padding: const EdgeInsets.only(left: 2),
@@ -150,7 +162,7 @@ class _InboxItemState extends State<InboxItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 3),
                                   child: Text(
-                                    "53 307651",
+                                    widget.demand.client.phone,
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
@@ -189,7 +201,8 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.originAddress.addressText,
+                                textAlign: TextAlign.left,
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500),
@@ -227,7 +240,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.destinationAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.w500),

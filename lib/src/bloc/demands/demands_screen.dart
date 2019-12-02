@@ -1,4 +1,5 @@
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:dtaxi_driver/src/ui/inbox_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +55,15 @@ class DemandsScreenState extends State<DemandsScreen> {
             ));
           }
           if (currentState is InDemandsState) {
-            return Container();
+            return ListView.builder(
+              itemCount: currentState.demands.length,
+              itemBuilder: (context, index) {
+                return InboxItem(
+                  demand: currentState.demands[index],
+                  status: InboxStatus.NEWS,
+                );
+              },
+            );
           }
           return Container();
         });
