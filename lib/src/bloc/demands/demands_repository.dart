@@ -12,7 +12,7 @@ class DemandsRepository {
     return await _demandsProvider.query(Queries.demandsList, data: {
       "states": demandStates ??
           [
-            DemandType.SENDED,
+            DemandType.SENT,
             DemandType.PENDING,
           ]
     });
@@ -35,8 +35,12 @@ class DemandsRepository {
         .mutate(Mutations.acceptDemand, data: {"demandId": demandId});
   }
 
-  Future<ResponseModel<Demand>> cancelDemand(String demandId) async {
-    return await _demandsProvider
-        .mutate(Mutations.cancelDemand, data: {"demandId": demandId});
+  Future<ResponseModel<Demand>> cancelDemand(String demandId, String cancelType,
+      {String reason}) async {
+    return await _demandsProvider.mutate(Mutations.cancelDemand, data: {
+      "demandId": demandId,
+      "canceledType": cancelType,
+      if (reason != null) "reason": reason
+    });
   }
 }

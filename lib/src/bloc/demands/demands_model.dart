@@ -72,7 +72,7 @@ class Demand {
       case DemandType.ACCEPTED:
         return "ACEPTADA";
         break;
-      case DemandType.SENDED:
+      case DemandType.SENT:
         return "NUEVO";
         break;
       case DemandType.CANCELED:
@@ -117,9 +117,17 @@ class Client {
 
 class DemandType {
   static const PENDING = "PENDING";
-  static const SENDED = "SENDED";
+  static const SENT = "SENDED";
   static const ACCEPTED = "ACCEPTED";
   static const ASSIGNED = "ASSIGNED";
   static const IN_COURSE = "IN_COURSE";
   static const CANCELED = "CANCELED";
+}
+
+class CancelType {
+  static const CLIENT_SUSPECT = "CLIENT_SUSPECT";
+  static const DANGEROUS_ZONE = "DANGEROUS_ZONE";
+  static const MISSING_CLIENT = "MISSING_CLIENT";
+  static const TECHNICAL_PROBLEMS = "TECHNICAL_PROBLEMS";
+  static const OTHERS = "OTHERS";
 }

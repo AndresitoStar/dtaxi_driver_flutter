@@ -56,3 +56,28 @@ class AcceptDemandEvent extends DemandsEvent {
     }
   }
 }
+
+class CancelDemandEvent extends DemandsEvent {
+  final String demandId;
+  final String cancelType;
+  final String reason;
+
+  CancelDemandEvent(this.demandId, this.cancelType, {this.reason});
+
+  @override
+  String toString() => 'CancelDemandEvent';
+
+  @override
+  Future<DemandsState> applyAsync(
+      {DemandsState currentState, DemandsBloc bloc}) async {
+    try {
+      var response = await _demandsRepository.cancelDemand(demandId, cancelType,
+          reason: reason);
+      return InDemandsState(response.results);
+    } catch (error) {
+      if (error is GraphQLError && currentState is InDemandsState)
+        return currentState.copyWith(error: error.message);
+      return ErrorDemandsState(error?.toString());
+    }
+  }
+}

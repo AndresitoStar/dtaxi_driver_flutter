@@ -13,6 +13,8 @@ class InboxItem extends StatefulWidget {
 
 class _InboxItemState extends State<InboxItem> {
   bool details;
+  String _radioReasonValue = "";
+  String _reasonDescription = "";
 
   @override
   void initState() {
@@ -26,7 +28,7 @@ class _InboxItemState extends State<InboxItem> {
     final width = MediaQuery.of(context).size.width;
     switch (widget.demand.state) {
       case DemandType.PENDING:
-      case DemandType.SENDED:
+      case DemandType.SENT:
         return newInboxItem(width);
         break;
       case DemandType.ACCEPTED:
@@ -636,7 +638,22 @@ class _InboxItemState extends State<InboxItem> {
                   Expanded(
                     child: OutlineButton(
                         onPressed: () {
-                          // Cancel
+                          showDialog(
+                            context: context,
+                            builder: (context) => Center(
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: <Widget>[
+                                  AlertDialog(
+                                    title: Text("Seleccione la causa"),
+                                    content: ReasonSelector(
+                                      demandId: widget.demand.id,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                         child: Text(
                           "CANCELAR",
@@ -1261,5 +1278,147 @@ class _InboxItemState extends State<InboxItem> {
             ],
           ),
         ));
+  }
+}
+
+class ReasonSelector extends StatefulWidget {
+  final String demandId;
+
+  const ReasonSelector({Key key, this.demandId}) : super(key: key);
+
+  @override
+  _ReasonSelectorState createState() => _ReasonSelectorState();
+}
+
+class _ReasonSelectorState extends State<ReasonSelector> {
+  String _radioReasonValue = "";
+  TextEditingController _reasonCtrl;
+
+  @override
+  void initState() {
+    _reasonCtrl = new TextEditingController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Radio(
+                value: CancelType.CLIENT_SUSPECT,
+                groupValue: _radioReasonValue,
+                onChanged: (value) {
+                  setState(() {
+                    _radioReasonValue = value;
+                  });
+                }),
+            Text("Cliente Sospechoso")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Radio(
+                value: CancelType.DANGEROUS_ZONE,
+                groupValue: _radioReasonValue,
+                onChanged: (value) {
+                  setState(() {
+                    _radioReasonValue = value;
+                  });
+                }),
+            Text("Zona peligrosa")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Radio(
+                value: CancelType.MISSING_CLIENT,
+                groupValue: _radioReasonValue,
+                onChanged: (value) {
+                  setState(() {
+                    _radioReasonValue = value;
+                  });
+                }),
+            Text("El cliente no se presentó")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Radio(
+                value: CancelType.TECHNICAL_PROBLEMS,
+                groupValue: _radioReasonValue,
+                onChanged: (value) {
+                  setState(() {
+                    _radioReasonValue = value;
+                  });
+                }),
+            Text("Problemas técnicos")
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Radio(
+                value: CancelType.OTHERS,
+                groupValue: _radioReasonValue,
+                onChanged: (value) {
+                  setState(() {
+                    _radioReasonValue = value;
+                  });
+                }),
+            Text("Otros")
+          ],
+        ),
+        if (_radioReasonValue == CancelType.OTHERS)
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: TextFormField(
+                  controller: _reasonCtrl,
+                  decoration: InputDecoration(
+                      labelText: "Describa la razón",
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      hasFloatingPlaceholder: true,
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor))),
+                ),
+              )
+            ],
+          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: OutlineButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  "Cancelar".toUpperCase(),
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                ),
+              ),
+            ),
+            Expanded(
+              child: OutlineButton(
+                onPressed: _radioReasonValue.isNotEmpty
+                    ? () {
+                        DemandsBloc().dispatch(CancelDemandEvent(
+                            widget.demandId, _radioReasonValue,
+                            reason: _reasonCtrl.text));
+                        Navigator.of(context).pop();
+                      }
+                    : null,
+                child: Text(
+                  "Aceptar".toUpperCase(),
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
   }
 }
