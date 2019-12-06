@@ -1,13 +1,14 @@
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:dtaxi_driver/src/bloc/login/index.dart';
+import 'package:dtaxi_driver/src/bloc/login/snows_demand_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InboxItem extends StatefulWidget {
   final Demand demand;
-  final DemandsBloc demandsBloc;
+  final SDemandBloc sDemandBloc;
 
-  InboxItem({@required this.demand, @required this.demandsBloc})
-      : assert(demand != null);
+  InboxItem({@required this.demand, this.sDemandBloc}) : assert(demand != null);
 
   @override
   _InboxItemState createState() => _InboxItemState();
@@ -28,16 +29,17 @@ class _InboxItemState extends State<InboxItem> {
     final width = MediaQuery.of(context).size.width;
     switch (widget.demand.state) {
       case DemandType.PENDING:
+        return newInboxItem(width);
       case DemandType.SENT:
         return newInboxItem(width);
         break;
       case DemandType.ACCEPTED:
-        return acceptedInboxItem(width);
+        return acceptedInboxItem(width, accepted: true);
         break;
       case DemandType.IN_COURSE:
         return inProgressInboxItem(width);
       case DemandType.ASSIGNED:
-        return assignedInboxItem(width);
+        return acceptedInboxItem(width, accepted: false);
         break;
     }
     return Container();
@@ -87,10 +89,9 @@ class _InboxItemState extends State<InboxItem> {
                                           DateTime.parse(widget.demand.date))
                                       .toString()
                                       .toUpperCase(),
-                                  // "08 DE DICIEMBRE DEL 2017",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16),
+                                      fontSize: 14),
                                 ),
                               )
                             ],
@@ -141,6 +142,7 @@ class _InboxItemState extends State<InboxItem> {
                         ],
                       )),
                   OutlineButton(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: details ? Text("VER MENOS") : Text("DETALLES"),
                     onPressed: () {
                       setState(() {
@@ -282,8 +284,7 @@ class _InboxItemState extends State<InboxItem> {
                   Expanded(
                     child: OutlineButton(
                         onPressed: () {
-                          widget.demandsBloc
-                              .dispatch(AcceptDemandEvent(widget.demand.id));
+                          widget.sDemandBloc.dispatch(AcceptSDemandEvent());
                         },
                         child: Text(
                           "ACEPTAR",
@@ -300,7 +301,7 @@ class _InboxItemState extends State<InboxItem> {
         ));
   }
 
-  Widget acceptedInboxItem(double width) {
+  Widget acceptedInboxItem(double width, {bool accepted}) {
     return Card(
       elevation: 1,
       child: Container(
@@ -342,7 +343,7 @@ class _InboxItemState extends State<InboxItem> {
                                     .toString()
                                     .toUpperCase(),
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 16),
+                                    fontWeight: FontWeight.w700, fontSize: 14),
                               ),
                             )
                           ],
@@ -393,6 +394,7 @@ class _InboxItemState extends State<InboxItem> {
                       ],
                     )),
                 OutlineButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: details ? Text("VER MENOS") : Text("DETALLES"),
                   onPressed: () {
                     setState(() {
@@ -568,16 +570,9 @@ class _InboxItemState extends State<InboxItem> {
               children: <Widget>[
                 Expanded(
                   child: OutlineButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Comenzar".toUpperCase(),
-                      style: TextStyle(color: Colors.green),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: OutlineButton(
                       onPressed: () {
+                        widget.sDemandBloc.dispatch(CancelSDemandEvent());
+                        /*() {
                         showDialog(
                           context: context,
                           builder: (context) => Center(
@@ -595,6 +590,7 @@ class _InboxItemState extends State<InboxItem> {
                             ),
                           ),
                         );
+                      }*/
                       },
                       child: Text(
                         "CANCELAR",
@@ -602,6 +598,20 @@ class _InboxItemState extends State<InboxItem> {
                             color: Colors.red,
                             fontSize: 17,
                             fontWeight: FontWeight.w500),
+                      )),
+                ),
+                Expanded(
+                  child: OutlineButton(
+                      onPressed: () {
+                        if (accepted) {
+                          widget.sDemandBloc.dispatch(StartSDemandEvent());
+                        } else {
+                          widget.sDemandBloc.dispatch(AcceptSDemandEvent());
+                        }
+                      },
+                      child: Text(
+                        accepted ? "COMENZAR" : "ACEPTAR",
+                        style: TextStyle(color: Colors.green, fontSize: 17),
                       )),
                 ),
               ],
@@ -656,11 +666,15 @@ class _InboxItemState extends State<InboxItem> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "08 DE DICIEMBRE DEL 2017",
+                                  DateFormat("dd 'de' MMMM 'del' yyyy", "es_ES")
+                                      .format(
+                                          DateTime.parse(widget.demand.date))
+                                      .toString()
+                                      .toUpperCase(),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16),
+                                      fontSize: 14),
                                 ),
                               )
                             ],
@@ -709,6 +723,7 @@ class _InboxItemState extends State<InboxItem> {
                         ],
                       )),
                   OutlineButton(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     borderSide: BorderSide(color: Colors.white),
                     child: details
                         ? Text(
@@ -899,318 +914,13 @@ class _InboxItemState extends State<InboxItem> {
                   Expanded(
                     child: OutlineButton(
                         borderSide: BorderSide(color: Colors.white),
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.sDemandBloc.dispatch(CancelSDemandEvent());
+                        },
                         child: Text(
                           "DECLINAR",
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
-                        )),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
-  }
-
-  Widget assignedInboxItem(double width) {
-    return Card(
-        elevation: 1,
-        child: Container(
-          color: Colors.white,
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.65),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Text(
-                                  "ASIGNADO",
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Text(
-                                  "08 DE DICIEMBRE DEL 2017",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16),
-                                ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(left: 2),
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.alarm,
-                                    size: 15,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 3),
-                                    child: Text(
-                                      "03:00 PM",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                          Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth:
-                                          MediaQuery.of(context).size.width *
-                                              0.55),
-                                  child: Text(
-                                    "Eduardo Mustelier Martínez",
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 18),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      )),
-                  OutlineButton(
-                    child: details ? Text("VER MENOS") : Text("DETALLES"),
-                    onPressed: () {
-                      setState(() {
-                        details = !details;
-                      });
-                    },
-                  )
-                ],
-              ),
-              details
-                  ? Column(
-                      children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.phone,
-                                  size: 15,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "53 307651",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2, top: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.trip_origin,
-                                    size: 15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "DESDE",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.85),
-                              child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2, top: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2),
-                                  child: Icon(
-                                    Icons.location_on,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 15,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 3),
-                                  child: Text(
-                                    "HASTA",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 2),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.85),
-                              child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            )),
-                      ],
-                    )
-                  : Row(
-                      children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(left: 15, top: 5),
-                            child: Container(
-                                width: (width - 50) / 2,
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          "DESDE",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                            maxWidth: (width - 60) / 2,
-                                          ),
-                                          child: Text(
-                                            "10 Octubre",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.grey),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ))),
-                        Padding(
-                            padding: const EdgeInsets.only(left: 15, top: 5),
-                            child: Container(
-                                width: (width - 60) / 2,
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          "HASTA",
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        ConstrainedBox(
-                                          constraints: BoxConstraints(
-                                            maxWidth: (width - 60) / 2,
-                                          ),
-                                          child: Text(
-                                            "10 Octubre",
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.grey),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ))),
-                      ],
-                    ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: OutlineButton(
-                        onPressed: () {},
-                        child: Text(
-                          "DECLINAR",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
-                        )),
-                  ),
-                  Expanded(
-                    child: OutlineButton(
-                        onPressed: () {},
-                        child: Text(
-                          "ACEPTAR",
-                          style: TextStyle(
-                              color: Colors.green,
                               fontSize: 17,
                               fontWeight: FontWeight.w500),
                         )),

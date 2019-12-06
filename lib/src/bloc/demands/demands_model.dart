@@ -1,4 +1,5 @@
 import 'package:dtaxi_driver/src/bloc/authentication/authentication_model.dart';
+import 'package:dtaxi_driver/src/bloc/utils/db/dbhelper.dart';
 import 'package:dtaxi_driver/src/bloc/utils/response_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
@@ -60,6 +61,76 @@ class Demand {
       this.canceledType);
 
   factory Demand.fromJson(Map<String, dynamic> json) => _$DemandFromJson(json);
+
+  static Map<String, String> getFieldsForDB() {
+    return {
+      "id": DBType.PRIMARY_KEY,
+      "date": DBType.TEXT,
+      "originAddress": DBType.TEXT,
+      "originLatitude": DBType.DOUBLE,
+      "originLongitude": DBType.DOUBLE,
+      "destinationAddress": DBType.TEXT,
+      "destinationLattitude": DBType.DOUBLE,
+      "destinationLongitude": DBType.DOUBLE,
+      "clientId": DBType.TEXT,
+      "clientName": DBType.TEXT,
+      "clientPhone": DBType.TEXT,
+      "state": DBType.TEXT,
+      "annotation": DBType.TEXT,
+      "driverAnnotation": DBType.TEXT,
+      "price": DBType.DOUBLE,
+      "driverId": DBType.TEXT,
+      "driverName": DBType.TEXT,
+      "driverUserId": DBType.TEXT,
+      "callCenterId": DBType.TEXT,
+      "alarmTimeBefore": DBType.INTEGER,
+      "canceledType": DBType.TEXT,
+    };
+  }
+
+  Demand.fromDBJson(Map json)
+      : id = json['id'],
+        date = json['date'],
+        originAddress = DemandAddress(json['originAddress'],
+            json['originLatitude'], json['originLongitude']),
+        destinationAddress = DemandAddress(json['destinationAddress'],
+            json['destinationLattitude'], json['destinationLongitude']),
+        client =
+            Client(json['clientId'], json['clientName'], json['clientPhone']),
+        state = json['state'],
+        lostFound = <String, dynamic>{},
+        annotation = json['annotation'],
+        driverAnnotation = json['driverAnnotation'],
+        price = json['price'],
+        driver =
+            Driver(json['driverId'], json['driverName'], json['driverUserId']),
+        callCenterId = json['callCenterId'],
+        alarmTimeBefore = json['alarmTimeBefore'],
+        canceledType = json['canceledType'];
+
+  Map<String, dynamic> toDBJson() => <String, dynamic>{
+        "id": id,
+        "date": date,
+        "originAddress": originAddress.addressText,
+        "originLatitude": originAddress.latitude,
+        "originLongitude": originAddress.longitude,
+        "destinationAddress": destinationAddress.addressText,
+        "destinationLattitude": destinationAddress.latitude,
+        "destinationLongitude": destinationAddress.longitude,
+        "clientId": client.id,
+        "clientName": client.fullname,
+        "clientPhone": client.phone,
+        "state": state,
+        "annotation": annotation,
+        "driverAnnotation": driverAnnotation,
+        "price": price,
+        "driverId": driver.id,
+        "driverName": driver.name,
+        "driverUserId": driver.userId,
+        "callCenterId": callCenterId,
+        "alarmTimeBefore": alarmTimeBefore,
+        "canceledType": canceledType,
+      };
 
   Map<String, dynamic> toJson() => _$DemandToJson(this);
 
@@ -158,7 +229,7 @@ class Client {
 
 class DemandType {
   static const PENDING = "PENDING";
-  static const SENT = "SENDED";
+  static const SENT = "SENT";
   static const ACCEPTED = "ACCEPTED";
   static const ASSIGNED = "ASSIGNED";
   static const IN_COURSE = "IN_COURSE";

@@ -7,7 +7,7 @@ packages:
       name: analyzer
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.37.1+1"
+    version: "0.36.4"
   analyzer_plugin:
     dependency: transitive
     description:
@@ -175,7 +175,7 @@ packages:
       name: dart_style
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.2.10"
+    version: "1.2.8"
   dio:
     dependency: "direct main"
     description:
@@ -190,13 +190,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.4.0"
-  event_bus:
-    dependency: transitive
-    description:
-      name: event_bus
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.1.0"
   fixnum:
     dependency: transitive
     description:
@@ -234,7 +227,7 @@ packages:
       name: front_end
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.21+1"
+    version: "0.1.19"
   glob:
     dependency: transitive
     description:
@@ -311,7 +304,7 @@ packages:
       name: intl_translation
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.17.6"
+    version: "0.17.5"
   io:
     dependency: transitive
     description:
@@ -346,14 +339,7 @@ packages:
       name: kernel
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.3.21+1"
-  location:
-    dependency: "direct main"
-    description:
-      name: location
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.3.5"
+    version: "0.3.19"
   logging:
     dependency: transitive
     description:
@@ -382,13 +368,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.9.6+3"
-  mqtt_client:
-    dependency: "direct main"
-    description:
-      name: mqtt_client
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "5.6.1"
   package_config:
     dependency: transitive
     description:
@@ -430,7 +409,7 @@ packages:
       name: petitparser
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.4.0"
+    version: "2.3.0"
   platform:
     dependency: transitive
     description:
@@ -513,6 +492,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.5.5"
+  sqflite:
+    dependency: "direct main"
+    description:
+      name: sqflite
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0"
   stack_trace:
     dependency: transitive
     description:
@@ -541,6 +527,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.5"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0+1"
   term_glyph:
     dependency: transitive
     description:
@@ -612,5 +605,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.4.0 <3.0.0"
+  dart: ">=2.3.0 <3.0.0"
   flutter: ">=0.1.4 <2.0.0"

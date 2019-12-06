@@ -82,7 +82,6 @@ class DemandsScreenState extends State<DemandsScreen> {
                 itemBuilder: (context, index) {
                   return InboxItem(
                     demand: currentState.demands[index],
-                    demandsBloc: widget._demandsBloc,
                   );
                 },
               );
