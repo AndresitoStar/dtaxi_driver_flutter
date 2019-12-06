@@ -13,10 +13,6 @@ abstract class DemandsEvent {
 }
 
 class LoadDemandsEvent extends DemandsEvent {
-  final bool demandsByDriver;
-
-  LoadDemandsEvent({this.demandsByDriver = false});
-
   @override
   String toString() => 'LoadDemandsEvent';
 
@@ -24,10 +20,9 @@ class LoadDemandsEvent extends DemandsEvent {
   Future<DemandsState> applyAsync(
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
-      var response = demandsByDriver
-          ? await _demandsRepository.loadDemandsByDriver()
-          : await _demandsRepository.loadPendingDemands();
-      return InDemandsState(response.results);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
     } catch (_, stackTrace) {
       print('$_ $stackTrace');
       return ErrorDemandsState(_?.toString());
@@ -48,10 +43,9 @@ class AcceptDemandEvent extends DemandsEvent {
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
       var response = await _demandsRepository.acceptDemand(demandId);
-      List<Demand> prev = (currentState as InDemandsState).demands
-        ..removeWhere((d) => d.id == response.results.first.id);
-
-      return new InDemandsState(prev);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
     } catch (error, stacktrace) {
       if (error is GraphQLError && currentState is InDemandsState)
         return currentState.copyWith(error: error.message);
@@ -77,10 +71,109 @@ class CancelDemandEvent extends DemandsEvent {
     try {
       var response = await _demandsRepository.cancelDemand(demandId, cancelType,
           reason: reason);
-      List<Demand> prev = (currentState as InDemandsState).demands
-        ..remove(response.results.first);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
+    } catch (error, stacktrace) {
+      if (error is GraphQLError && currentState is InDemandsState)
+        return currentState.copyWith(error: error.message);
+      print(stacktrace);
+      return ErrorDemandsState(error?.toString());
+    }
+  }
+}
 
-      return InDemandsState(prev);
+class StartDemandEvent extends DemandsEvent {
+  final String demandId;
+
+  StartDemandEvent(this.demandId);
+
+  @override
+  String toString() => 'StartDemandEvent';
+
+  @override
+  Future<DemandsState> applyAsync(
+      {DemandsState currentState, DemandsBloc bloc}) async {
+    try {
+      var response = await _demandsRepository.startDemand(demandId);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
+    } catch (error, stacktrace) {
+      if (error is GraphQLError && currentState is InDemandsState)
+        return currentState.copyWith(error: error.message);
+      print(stacktrace);
+      return ErrorDemandsState(error?.toString());
+    }
+  }
+}
+
+class DeclineDemandEvent extends DemandsEvent {
+  final String demandId;
+
+  DeclineDemandEvent(this.demandId);
+
+  @override
+  String toString() => 'DeclineDemandEvent';
+
+  @override
+  Future<DemandsState> applyAsync(
+      {DemandsState currentState, DemandsBloc bloc}) async {
+    try {
+      var response = await _demandsRepository.declineDemand(demandId);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
+    } catch (error, stacktrace) {
+      if (error is GraphQLError && currentState is InDemandsState)
+        return currentState.copyWith(error: error.message);
+      print(stacktrace);
+      return ErrorDemandsState(error?.toString());
+    }
+  }
+}
+
+class PickUpDemandEvent extends DemandsEvent {
+  final String demandId;
+
+  PickUpDemandEvent(this.demandId);
+
+  @override
+  String toString() => 'DeclineDemandEvent';
+
+  @override
+  Future<DemandsState> applyAsync(
+      {DemandsState currentState, DemandsBloc bloc}) async {
+    try {
+      var response = await _demandsRepository.pickUpClient(demandId);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
+    } catch (error, stacktrace) {
+      if (error is GraphQLError && currentState is InDemandsState)
+        return currentState.copyWith(error: error.message);
+      print(stacktrace);
+      return ErrorDemandsState(error?.toString());
+    }
+  }
+}
+
+class FinishDemandEvent extends DemandsEvent {
+  final String demandId;
+
+  FinishDemandEvent(this.demandId);
+
+  @override
+  String toString() => 'DeclineDemandEvent';
+
+  @override
+  Future<DemandsState> applyAsync(
+      {DemandsState currentState, DemandsBloc bloc}) async {
+    try {
+      var response = await _demandsRepository.finishDemand(demandId);
+      var pending = await _demandsRepository.loadPendingDemands();
+      var accepted = await _demandsRepository.loadDemandsByDriver();
+      return InDemandsState(pending.results, accepted.results);
     } catch (error, stacktrace) {
       if (error is GraphQLError && currentState is InDemandsState)
         return currentState.copyWith(error: error.message);

@@ -49,18 +49,17 @@ class Mutations {
   static const acceptDemand = """
    mutation acceptDemand (\$demandId: ID!){
    demandAccepted (demandId:\$demandId) {
-     id
-     state
+     ...results
    }
  }
   """;
 
   static const cancelDemand = """
-mutation cancelDemand (\$demandId: ID!, \$reason: String, \$canceledType: CanceledType!){
+  mutation cancelDemand (\$demandId: ID!, \$reason: String, \$canceledType: CanceledType!){
     cancelDemandByDriver(demandId:\$demandId, reason:\$reason, canceledType:\$canceledType) {
-      id
+      ...results
     }
- }
+  }
   """;
 
   static const startDemand = Fragments.demandResults +
@@ -70,6 +69,31 @@ mutation cancelDemand (\$demandId: ID!, \$reason: String, \$canceledType: Cancel
      ...results
    }
  }
+  """;
+
+  static const pickUpClient = Fragments.demandResults +
+      """
+  mutation pickUpClient (\$demandId: ID!){
+    demandInCourse (demandId:\$demandId) {
+    ...results
+    }
+  }
+  """;
+
+  static const finishDemand = Fragments.demandResults +
+      """
+  mutation finishDemand (\$demandId: ID!){
+    demandFinished (demandId:\$demandId) {
+    ...results
+    }
+  }
+  """;
+
+  static const declineDemand = Fragments.demandResults +
+      """
+  mutation DeclineDemand (\$demandId: ID!){
+    demandNotifyAction(demandId: \$demandId, action:REFUSED)
+}
   """;
 }
 

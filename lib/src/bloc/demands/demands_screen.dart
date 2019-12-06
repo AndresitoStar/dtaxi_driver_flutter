@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DemandsScreen extends StatefulWidget {
-  const DemandsScreen(
-      {Key key,
-      @required DemandsBloc demandsBloc,
-      this.demandsByDriver = false})
-      : _demandsBloc = demandsBloc,
+  const DemandsScreen({
+    Key key,
+    @required DemandsBloc demandsBloc,
+  })  : _demandsBloc = demandsBloc,
         super(key: key);
 
   final DemandsBloc _demandsBloc;
-  final bool demandsByDriver;
 
   @override
   DemandsScreenState createState() {
@@ -28,8 +26,7 @@ class DemandsScreenState extends State<DemandsScreen> {
 
   @override
   void initState() {
-    _demandsBloc
-        .dispatch(LoadDemandsEvent(demandsByDriver: widget.demandsByDriver));
+    _demandsBloc.dispatch(LoadDemandsEvent());
     super.initState();
   }
 
@@ -70,18 +67,17 @@ class DemandsScreenState extends State<DemandsScreen> {
                             FlatButton(
                               child: Text("OK"),
                               onPressed: () {
-                                _demandsBloc.dispatch(LoadDemandsEvent(
-                                    demandsByDriver: widget.demandsByDriver));
+                                _demandsBloc.dispatch(LoadDemandsEvent());
                                 Navigator.of(context).pop();
                               },
                             )
                           ],
                         )));
               return ListView.builder(
-                itemCount: currentState.demands.length,
+                itemCount: currentState.pendingDemands.length,
                 itemBuilder: (context, index) {
                   return InboxItem(
-                    demand: currentState.demands[index],
+                    demand: currentState.pendingDemands[index],
                   );
                 },
               );

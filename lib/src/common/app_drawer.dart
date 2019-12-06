@@ -1,6 +1,5 @@
 import 'package:dtaxi_driver/src/bloc/authentication/index.dart';
-import 'package:dtaxi_driver/src/bloc/login/snows_demand_bloc.dart';
-import 'package:dtaxi_driver/src/bloc/login/snows_demand_screen.dart';
+import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:dtaxi_driver/src/ui/homepage.dart';
 import 'package:dtaxi_driver/src/ui/lost_and_found.dart';
 import 'package:flutter/material.dart';
@@ -90,8 +89,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   title: "BANDEJA DE ENTRADA SNOW",
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SDemandScreen(
-                              sDemandBloc: SDemandBloc(),
+                        builder: (context) => DemandsScreen(
+                              demandsBloc: DemandsBloc(),
                             )));
                   },
                   activeRoute: "/",

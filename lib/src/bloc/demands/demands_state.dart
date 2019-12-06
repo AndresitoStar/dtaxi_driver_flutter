@@ -1,9 +1,7 @@
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
-import 'package:dtaxi_driver/src/bloc/utils/list_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:quiver/core.dart';
 
 @immutable
 abstract class DemandsState extends Equatable {
@@ -26,32 +24,19 @@ class UnDemandsState extends DemandsState {
 
 /// Initialized
 class InDemandsState extends DemandsState {
-  final List<Demand> demands;
+  final List<Demand> pendingDemands;
+  final List<Demand> acceptedDemands;
   final String error;
 
-  InDemandsState(this.demands, {this.error}) : super([demands, error]);
+  InDemandsState(this.pendingDemands, this.acceptedDemands, {this.error})
+      : super([pendingDemands, acceptedDemands, error]);
 
   @override
   String toString() => 'InDemandsState';
 
   @override
-  DemandsState copyWith({List<Demand> demands, String error}) {
-    return InDemandsState(demands ?? this.demands, error: error);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is InDemandsState &&
-        this.error == other.error &&
-        ListUtils.listCompare(this.demands, other.demands);
-  }
-
-  @override
-  int get hashCode {
-    return hashObjects([
-      this.demands,
-      this.error,
-    ].where((s) => s != null));
+  DemandsState copyWith({error}) {
+    return InDemandsState(pendingDemands, acceptedDemands, error: error);
   }
 }
 

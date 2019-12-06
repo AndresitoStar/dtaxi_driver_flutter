@@ -54,4 +54,25 @@ class DemandsRepository {
       "demandId": demandId,
     });
   }
+
+  Future<ResponseModel<Demand>> declineDemand(String demandId) async {
+    return await _demandsProvider
+        .mutate(Mutations.declineDemand, "demandNotifyAction", data: {
+      "demandId": demandId,
+    });
+  }
+
+  Future<ResponseModel<Demand>> pickUpClient(String demandId) async {
+    return await _demandsProvider
+        .mutate(Mutations.pickUpClient, "demandInCourse", data: {
+      "demandId": demandId,
+    });
+  }
+
+  Future<ResponseModel<Demand>> finishDemand(String demandId) async {
+    return await _demandsProvider
+        .mutate(Mutations.finishDemand, "demandFinished", data: {
+      "demandId": demandId,
+    });
+  }
 }

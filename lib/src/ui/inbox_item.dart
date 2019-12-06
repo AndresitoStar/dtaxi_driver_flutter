@@ -1,14 +1,12 @@
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
-import 'package:dtaxi_driver/src/bloc/login/index.dart';
-import 'package:dtaxi_driver/src/bloc/login/snows_demand_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InboxItem extends StatefulWidget {
   final Demand demand;
-  final SDemandBloc sDemandBloc;
+  final DemandsBloc demandsBloc;
 
-  InboxItem({@required this.demand, this.sDemandBloc}) : assert(demand != null);
+  InboxItem({@required this.demand, this.demandsBloc}) : assert(demand != null);
 
   @override
   _InboxItemState createState() => _InboxItemState();
@@ -284,7 +282,8 @@ class _InboxItemState extends State<InboxItem> {
                   Expanded(
                     child: OutlineButton(
                         onPressed: () {
-                          widget.sDemandBloc.dispatch(AcceptSDemandEvent());
+                          widget.demandsBloc
+                              .dispatch(AcceptDemandEvent(widget.demand.id));
                         },
                         child: Text(
                           "ACEPTAR",
@@ -571,8 +570,6 @@ class _InboxItemState extends State<InboxItem> {
                 Expanded(
                   child: OutlineButton(
                       onPressed: () {
-                        widget.sDemandBloc.dispatch(CancelSDemandEvent());
-                        /*() {
                         showDialog(
                           context: context,
                           builder: (context) => Center(
@@ -590,7 +587,6 @@ class _InboxItemState extends State<InboxItem> {
                             ),
                           ),
                         );
-                      }*/
                       },
                       child: Text(
                         "CANCELAR",
@@ -604,9 +600,11 @@ class _InboxItemState extends State<InboxItem> {
                   child: OutlineButton(
                       onPressed: () {
                         if (accepted) {
-                          widget.sDemandBloc.dispatch(StartSDemandEvent());
+                          widget.demandsBloc
+                              .dispatch(StartDemandEvent(widget.demand.id));
                         } else {
-                          widget.sDemandBloc.dispatch(AcceptSDemandEvent());
+                          widget.demandsBloc
+                              .dispatch(AcceptDemandEvent(widget.demand.id));
                         }
                       },
                       child: Text(
@@ -710,7 +708,7 @@ class _InboxItemState extends State<InboxItem> {
                                           MediaQuery.of(context).size.width *
                                               0.55),
                                   child: Text(
-                                    "Eduardo Mustelier Martínez",
+                                    widget.demand.client.fullname,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
@@ -759,7 +757,7 @@ class _InboxItemState extends State<InboxItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 3),
                                   child: Text(
-                                    "53 307651",
+                                    widget.demand.client.phone,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
@@ -800,7 +798,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.originAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500),
@@ -838,7 +836,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.destinationAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500),
@@ -860,7 +858,7 @@ class _InboxItemState extends State<InboxItem> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 3),
                                   child: Text(
-                                    "53 307651",
+                                    widget.demand.client.phone,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
@@ -901,7 +899,7 @@ class _InboxItemState extends State<InboxItem> {
                                   maxWidth:
                                       MediaQuery.of(context).size.width * 0.85),
                               child: Text(
-                                "Manuel Ascunce 201, entre Luis Hidalgo y Mariano Rajoy, 10 de octubre",
+                                widget.demand.destinationAddress.addressText,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500),
@@ -915,7 +913,8 @@ class _InboxItemState extends State<InboxItem> {
                     child: OutlineButton(
                         borderSide: BorderSide(color: Colors.white),
                         onPressed: () {
-                          widget.sDemandBloc.dispatch(CancelSDemandEvent());
+                          widget.demandsBloc
+                              .dispatch(DeclineDemandEvent(widget.demand.id));
                         },
                         child: Text(
                           "DECLINAR",

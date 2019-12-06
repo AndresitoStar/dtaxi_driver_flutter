@@ -1,5 +1,5 @@
 import 'package:dtaxi_driver/src/bloc/demands/demands_model.dart';
-import 'package:dtaxi_driver/src/bloc/login/snows_demand_bloc.dart';
+import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:dtaxi_driver/src/common/app_drawer.dart';
 import 'package:dtaxi_driver/src/common/app_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +9,9 @@ import 'inbox_item.dart';
 class Inbox extends StatefulWidget {
   final List<Demand> inboxItems;
   final List<Demand> acceptedItems;
-  final SDemandBloc sDemandBloc;
+  final DemandsBloc demandsBloc;
 
-  Inbox({this.inboxItems, this.acceptedItems,this.sDemandBloc});
+  Inbox({this.inboxItems, this.acceptedItems, this.demandsBloc});
 
   @override
   _InboxState createState() => _InboxState();
@@ -26,11 +26,12 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
       _TabContent(text: "Aceptados", child: widget.acceptedItems)
     ];
   }
+
   @override
   void initState() {
-    createPages(); 
-    _controller = TabController(vsync: this, length: _allPages.length);    
-    super.initState();    
+    createPages();
+    _controller = TabController(vsync: this, length: _allPages.length);
+    super.initState();
   }
 
   @override
@@ -70,7 +71,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                     itemBuilder: (context, index) {
                       return InboxItem(
                         demand: page.child[index],
-                        sDemandBloc: widget.sDemandBloc,
+                        demandsBloc: widget.demandsBloc,
                       );
                     },
                   ),
