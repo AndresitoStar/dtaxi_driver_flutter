@@ -229,7 +229,7 @@ class Client {
 
 class DemandType {
   static const PENDING = "PENDING";
-  static const SENT = "SENT";
+  static const SENT = "SENDED";
   static const ACCEPTED = "ACCEPTED";
   static const ASSIGNED = "ASSIGNED";
   static const IN_COURSE = "IN_COURSE";
