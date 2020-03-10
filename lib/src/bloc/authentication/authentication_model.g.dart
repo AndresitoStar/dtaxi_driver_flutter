@@ -11,6 +11,7 @@ AuthenticationModel _$AuthenticationModelFromJson(Map<String, dynamic> json) {
     json['token'] as String,
     json['fullname'] as String,
     json['role'] as Map<String, dynamic>,
+    json['profileImageId'] as String,
   );
 }
 
@@ -20,6 +21,7 @@ Map<String, dynamic> _$AuthenticationModelToJson(
       'token': instance.token,
       'fullname': instance.fullname,
       'role': instance.role,
+      'profileImageId': instance.profileImageId,
     };
 
 Driver _$DriverFromJson(Map<String, dynamic> json) {

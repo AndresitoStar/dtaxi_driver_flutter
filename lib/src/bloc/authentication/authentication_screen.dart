@@ -1,3 +1,4 @@
+import 'package:dtaxi_driver/src/ui/error.dart';
 import 'package:dtaxi_driver/src/ui/homepage.dart';
 import 'package:dtaxi_driver/src/ui/login.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
   @override
   void initState() {
     super.initState();
-    this._authenticationBloc.dispatch(LoginInitAuthenticationEvent());
+    this._authenticationBloc.add(LoginInitAuthenticationEvent());
   }
 
   @override
@@ -38,6 +39,9 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         bloc: widget._authenticationBloc,
+        condition: (prev, curr){
+          print("Previous sate: ${prev} --> Current state: ${curr}");
+        },
         builder: (
           BuildContext context,
           AuthenticationState currentState,
@@ -49,10 +53,13 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
           else if (currentState is InAuthenticationState)
             return LoginScreen(
               loginCallback: (username, password) => widget._authenticationBloc
-                  .dispatch(LoginAuthenticationEvent(username, password)),
+                  .add(LoginAuthenticationEvent(username, password)),
             );
           else if (currentState is ErrorAuthenticationState)
-            return Container();
+            return ErrorScreen(
+                message: (currentState as ErrorAuthenticationState).error,
+                callback: () => widget._authenticationBloc.add(LoginInitAuthenticationEvent())
+            );
           else
             return Homepage(
               title: "Bandeja de Entrada",

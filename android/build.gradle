@@ -3,13 +3,8 @@ buildscript {
         //maven { url 'http://nexus.prod.uci.cu/repository/maven-android/' }
         google()
         jcenter()
-        maven {
-            url '/home/tko/dev_install/m2repository'
-        }
         mavenLocal()
         maven { url 'https://jitpack.io' }
-        google()
-        jcenter()
         mavenCentral()
     }
 
@@ -23,13 +18,8 @@ allprojects {
         //maven { url 'http://nexus.prod.uci.cu/repository/maven-android/' }
         google()
         jcenter()
-        maven {
-            url '/home/tko/dev_install/m2repository'
-        }
         mavenLocal()
         maven { url 'https://jitpack.io' }
-        google()
-        jcenter()
         mavenCentral()
     }
 }

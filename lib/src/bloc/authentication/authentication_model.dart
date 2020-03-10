@@ -22,8 +22,9 @@ class AuthenticationModel extends Equatable {
   final String token;
   final String fullname;
   final Map role;
+  final String profileImageId;
 
-  AuthenticationModel(this.token, this.fullname, this.role);
+  AuthenticationModel(this.token, this.fullname, this.role, this.profileImageId);
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationModelFromJson(json);

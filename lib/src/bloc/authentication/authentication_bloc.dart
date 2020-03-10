@@ -20,10 +20,10 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     try {
-      yield await event.applyAsync(currentState: currentState, bloc: this);
+      yield await event.applyAsync(currentState: state, bloc: this);
     } catch (_, stackTrace) {
       print('$_ $stackTrace');
-      yield currentState;
+      yield state;
     }
   }
 }

@@ -23,8 +23,13 @@ class IProvider<T> with DioBase {
       document: query,
       variables: data,
     ));
-    if (response.errors != null && response.errors.isNotEmpty)
-      throw response.errors.first;
+    if(response.hasException) {
+      if (response.exception.graphqlErrors.isNotEmpty)
+        throw new Exception(response.exception.graphqlErrors.first.message);
+      if (response.exception.clientException != null){
+        throw new Exception(response.exception.clientException.message);
+      }
+    }
     return createResponseModelFromJson(response.data, key);
   }
 
@@ -35,8 +40,8 @@ class IProvider<T> with DioBase {
       variables: data,
     ));
 
-    if (response.errors != null && response.errors.isNotEmpty)
-      throw response.errors.first;
+    if (response.hasException != null && response.exception.graphqlErrors.isNotEmpty)
+      throw response.exception.graphqlErrors.first;
     return createResponseModelFromJson(response.data, key);
   }
 

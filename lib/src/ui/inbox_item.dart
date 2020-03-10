@@ -283,7 +283,7 @@ class _InboxItemState extends State<InboxItem> {
                     child: OutlineButton(
                         onPressed: () {
                           widget.demandsBloc
-                              .dispatch(AcceptDemandEvent(widget.demand.id));
+                              .add(AcceptDemandEvent(widget.demand.id));
                         },
                         child: Text(
                           "ACEPTAR",
@@ -601,10 +601,10 @@ class _InboxItemState extends State<InboxItem> {
                       onPressed: () {
                         if (accepted) {
                           widget.demandsBloc
-                              .dispatch(StartDemandEvent(widget.demand.id));
+                              .add(StartDemandEvent(widget.demand.id));
                         } else {
                           widget.demandsBloc
-                              .dispatch(AcceptDemandEvent(widget.demand.id));
+                              .add(AcceptDemandEvent(widget.demand.id));
                         }
                       },
                       child: Text(
@@ -914,7 +914,7 @@ class _InboxItemState extends State<InboxItem> {
                         borderSide: BorderSide(color: Colors.white),
                         onPressed: () {
                           widget.demandsBloc
-                              .dispatch(DeclineDemandEvent(widget.demand.id));
+                              .add(DeclineDemandEvent(widget.demand.id));
                         },
                         child: Text(
                           "DECLINAR",
@@ -1058,7 +1058,7 @@ class _ReasonSelectorState extends State<ReasonSelector> {
               child: OutlineButton(
                 onPressed: _radioReasonValue.isNotEmpty
                     ? () {
-                        widget.demandsBloc.dispatch(CancelDemandEvent(
+                        widget.demandsBloc.add(CancelDemandEvent(
                             widget.demandId, _radioReasonValue,
                             reason: _reasonCtrl.text));
                         Navigator.of(context).pop();

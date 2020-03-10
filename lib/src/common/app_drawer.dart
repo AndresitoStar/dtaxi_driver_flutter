@@ -117,7 +117,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 DrawerListTile(
                   title: "CAMBIAR SESIÓN",
                   onTap: () => AuthenticationBloc()
-                      .dispatch(LogoutAuthenticationEvent()),
+                      .add(LogoutAuthenticationEvent()),
                   activeRoute: "/",
                   icon: Icons.cancel,
                   route: "/",

@@ -44,7 +44,7 @@ class LoginAuthenticationEvent extends AuthenticationEvent {
   Future<AuthenticationState> applyAsync(
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
-      var response = await _authenticationRepository.login(username, password);
+      var response = await _authenticationRepository.login(username.trim(), password.trim());
       var user = response.results.first;
       if (user.role["name"] == "DRIVER") {
         SecureStorage.saveToken(response.results.first.token);
@@ -65,7 +65,6 @@ class LogoutAuthenticationEvent extends AuthenticationEvent {
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
       SecureStorage.removeToken();
-
       return new InAuthenticationState();
     } catch (_, stackTrace) {
       print('$_ $stackTrace');

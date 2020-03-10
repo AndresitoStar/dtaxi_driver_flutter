@@ -19,14 +19,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^0.14.4
-  flutter_bloc: ^0.20.1
+  bloc: ^3.0.0
+  flutter_bloc: ^3.2.0
   equatable: ^0.4.0
   dio: ^2.1.13
-  rxdart: ^0.22.1+1
+  rxdart: ^0.23.1
   json_annotation: ^3.0.0
   cupertino_icons: ^0.1.2
-  graphql_flutter: ^2.1.0
+  graphql_flutter: ^3.0.0
   #location: ^2.3.5
   # flutter_secure_storage: ^3.2.0
   shared_preferences: 0.5.2

@@ -26,7 +26,7 @@ class DemandsScreenState extends State<DemandsScreen> {
 
   @override
   void initState() {
-    _demandsBloc.dispatch(LoadDemandsEvent());
+    _demandsBloc.add(LoadDemandsEvent());
     super.initState();
   }
 
@@ -67,23 +67,30 @@ class DemandsScreenState extends State<DemandsScreen> {
                             FlatButton(
                               child: Text("OK"),
                               onPressed: () {
-                                _demandsBloc.dispatch(LoadDemandsEvent());
+                                _demandsBloc.add(LoadDemandsEvent());
                                 Navigator.of(context).pop();
                               },
                             )
                           ],
                         )));
-              return ListView.builder(
-                itemCount: currentState.pendingDemands.length,
-                itemBuilder: (context, index) {
-                  return InboxItem(
-                    demand: currentState.pendingDemands[index],
-                  );
-                },
+              return new RefreshIndicator(
+                onRefresh: refreshList,
+                child: ListView.builder(
+                  itemCount: currentState.pendingDemands.length,
+                  itemBuilder: (context, index) {
+                    return InboxItem(
+                      demand: currentState.pendingDemands[index],
+                    );
+                  },
+                ),
               );
             }
             return Container();
           }),
     );
+  }
+
+  void refreshList() {
+    _demandsBloc.add(LoadDemandsEvent());
   }
 }

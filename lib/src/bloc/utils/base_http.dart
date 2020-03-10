@@ -1,4 +1,5 @@
 import 'package:dtaxi_driver/src/bloc/utils/secure_storage.dart';
+import 'package:dtaxi_driver/src/common/constants.dart';
 import 'package:graphql/client.dart';
 
 class BaseHttpConfig {
@@ -12,7 +13,7 @@ class BaseHttpConfig {
 
   BaseHttpConfig._internal() {
     final HttpLink _httpLink =
-        HttpLink(uri: "http://dtaxi.pyxel.cu/api/graphql");
+        HttpLink(uri: AplicationConstants.API_URL);
     final AuthLink _authLink =
         AuthLink(getToken: () async => await SecureStorage.getToken());
 

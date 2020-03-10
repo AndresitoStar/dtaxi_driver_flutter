@@ -17,10 +17,14 @@ samples, guidance on mobile development, and a full API reference.
 
 # Requisitos funcionales principales de DTaxi Chofer
 
-- [ ] Autenticarse en el sistema, verificando que el rol del usuario sea DRIVER
-- [ ] Obtener las demandas PENDIENTES y listarlas (Almacenarlas en db local)
-- [ ] Pull to refresh en la pantalla de las demandas
-- [ ] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
+X - Terminado
+NP - No probado
+C - Haciendose
+
+- [X] Autenticarse en el sistema, verificando que el rol del usuario sea DRIVER
+- [NP] Obtener las demandas PENDIENTES y listarlas (Almacenarlas en db local)
+- [X] Pull to refresh en la pantalla de las demandas
+- [C] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
 - [ ] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)
 - [ ] Mostrar pagina de informacion de la app (about us)
 - [ ] Enviar localizacion del chofer en tiempo real (lat, lng) (No tiene que ser un Service, puede ser mientras la app este abierta)
@@ -47,7 +51,8 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] Cuando levante la app, consultar si hay una actualizacion de apk; en caso de existir, indicar mediante un dialogo y mandar a descargarla
 - [ ] Permitir Cerrar sesion
 
-
-
+# Otros requisitos que surgieron
+- [X] Tratamiento de errores en la autenticación
+- [ ] Guardar los datos de la información del usuario en la autenticación
 
 
