@@ -25,4 +25,12 @@ class DemandsBloc extends Bloc<DemandsEvent, DemandsState> {
       yield state;
     }
   }
+
+  @override
+  Future<Function> close() {
+    _demandsBlocSingleton.close();
+    return super.close();
+  }
+
+
 }

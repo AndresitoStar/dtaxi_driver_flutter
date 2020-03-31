@@ -1,6 +1,6 @@
 import 'package:dtaxi_driver/src/common/theme_data.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/services/system_chrome.dart';
+import 'package:flutter/services.dart';
 
 typedef LoginCallback(String username, String password);
 

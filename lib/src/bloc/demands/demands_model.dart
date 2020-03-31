@@ -64,7 +64,7 @@ class Demand {
 
   static Map<String, String> getFieldsForDB() {
     return {
-      "id": DBType.PRIMARY_KEY,
+      "id": DBType.TEXT_PRIMARY_KEY,
       "date": DBType.TEXT,
       "originAddress": DBType.TEXT,
       "originLatitude": DBType.DOUBLE,
@@ -124,9 +124,9 @@ class Demand {
         "annotation": annotation,
         "driverAnnotation": driverAnnotation,
         "price": price,
-        "driverId": driver.id,
-        "driverName": driver.name,
-        "driverUserId": driver.userId,
+        "driverId": driver != null ? driver.id : null,
+        "driverName": driver != null ? driver.name : null,
+        "driverUserId": driver != null ? driver.userId : null,
         "callCenterId": callCenterId,
         "alarmTimeBefore": alarmTimeBefore,
         "canceledType": canceledType,

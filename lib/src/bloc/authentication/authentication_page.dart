@@ -8,7 +8,8 @@ class AuthenticationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _authenticationBloc = new AuthenticationBloc();
+    // ignore: close_sinks
+    AuthenticationBloc _authenticationBloc = new AuthenticationBloc();
     return new Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -17,4 +18,6 @@ class AuthenticationPage extends StatelessWidget {
               authenticationBloc: _authenticationBloc)),
     );
   }
+
+
 }

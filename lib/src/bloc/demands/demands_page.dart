@@ -7,12 +7,11 @@ class DemandsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _demandsBloc = DemandsBloc();
     return Scaffold(
       appBar: AppBar(
         title: Text("Demands"),
       ),
-      body: DemandsScreen(demandsBloc: _demandsBloc, state: DemandScreenState.PENDING,),
+      body: DemandsScreen(demandsBloc: DemandsBloc(), state: DemandScreenState.PENDING,),
     );
   }
 }

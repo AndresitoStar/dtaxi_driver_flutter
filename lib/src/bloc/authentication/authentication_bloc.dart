@@ -26,4 +26,12 @@ class AuthenticationBloc
       yield state;
     }
   }
+
+  @override
+  Future<Function> close() {
+    _authenticationBlocSingleton.close();
+    return super.close();
+  }
+
+
 }

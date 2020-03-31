@@ -20,6 +20,7 @@ class IProvider<T> with DioBase {
   Future<ResponseModel<T>> query(String query, String key,
       {Map<String, dynamic> data}) async {
     var response = await client.query(QueryOptions(
+      // ignore: deprecated_member_use
       document: query,
       variables: data,
     ));
@@ -36,6 +37,7 @@ class IProvider<T> with DioBase {
   Future<ResponseModel<T>> mutate(String mutation, String key,
       {Map<String, dynamic> data}) async {
     var response = await client.mutate(MutationOptions(
+      // ignore: deprecated_member_use
       document: mutation,
       variables: data,
     ));

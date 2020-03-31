@@ -4,7 +4,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBType {
-  static const PRIMARY_KEY = "INTEGER PRIMARY KEY";
+  static const TEXT_PRIMARY_KEY = "TEXT PRIMARY KEY";
+  static const INTEGER_PRIMARY_KEY = "INTEGER PRIMARY KEY";
   static const INTEGER = "INTEGER";
   static const TEXT = "TEXT";
   static const DOUBLE = "DOUBLE";
@@ -30,9 +31,34 @@ class DBHelper<T> {
     return theDb;
   }
 
-  Future<List<Map<String, dynamic>>> findAll({orderBy}) async {
+  Future<List<Map<String, dynamic>>> findAll({orderBy, Map<String, dynamic> where}) async {
     var dbClient = await db;
     var query = "SELECT * FROM $dbTableName";
+    if (where != null && where.isNotEmpty){
+      query = "$query WHERE ";
+      where.forEach((key, val){
+         if(val is String){
+           query += "$key = '$val'";
+         }
+
+         if(val is num){
+           query += "$key = $val";
+         }
+
+         if(val is List){
+
+           for(int i = 0; i< val.length; i++){
+             query += "$key = '${val[i]}'";
+             if((i + 1) < val.length)
+               query += " OR ";
+           }
+
+         }
+
+         query +=" AND";
+      });
+      query = query.replaceRange(query.length -4, query.length, "");
+    }
     if (orderBy != null && orderBy != "") {
       query = "$query ORDER BY $orderBy";
     }
@@ -66,9 +92,16 @@ class DBHelper<T> {
     return dbClient.update(dbTableName, values, where: "id = $id");
   }
 
-  Future<int> delete(int id) async {
+  Future<int> delete({int intId, String stringId}) async {
     var dbClient = await db;
-    return dbClient.delete(dbTableName, where: "id = $id");
+    if(intId != null && intId > 0)
+      return dbClient.delete(dbTableName, where: "id = $intId");
+
+    if(stringId != null && stringId.trim().length > 0)
+      return dbClient.delete(dbTableName, where: "id = '$stringId'");
+
+    return -1;
+
   }
 
   Future<int> deleteAll() async {

@@ -32,6 +32,7 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
 
   @override
   void dispose() {
+    _authenticationBloc.close();
     super.dispose();
   }
 
@@ -40,7 +41,8 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         bloc: widget._authenticationBloc,
         condition: (prev, curr){
-          print("Previous sate: ${prev} --> Current state: ${curr}");
+          print("Previous sate: $prev --> Current state: $curr");
+          return prev != curr;
         },
         builder: (
           BuildContext context,
@@ -57,7 +59,7 @@ class AuthenticationScreenState extends State<AuthenticationScreen> {
             );
           else if (currentState is ErrorAuthenticationState)
             return ErrorScreen(
-                message: (currentState as ErrorAuthenticationState).error,
+                message: currentState.error,
                 callback: () => widget._authenticationBloc.add(LoginInitAuthenticationEvent())
             );
           else

@@ -35,7 +35,7 @@ class DemandsScreenState extends State<DemandsScreen> {
 
   @override
   void initState() {
-    _demandsBloc.add(LoadDemandsEvent());
+    _demandsBloc.add(LoadDemandsEvent(api: false));
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class DemandsScreenState extends State<DemandsScreen> {
                             FlatButton(
                               child: Text("OK"),
                               onPressed: () {
-                                _demandsBloc.add(LoadDemandsEvent());
+                                _demandsBloc.add(LoadDemandsEvent(api: false));
                                 Navigator.of(context).pop();
                               },
                             )
@@ -118,7 +118,8 @@ class DemandsScreenState extends State<DemandsScreen> {
     );
   }
 
-  Future<void> refreshList() {
-    _demandsBloc.add(LoadDemandsEvent());
+  Future<int> refreshList() {
+    _demandsBloc.add(LoadDemandsEvent(api: true));
+    return Future.value(1);
   }
 }

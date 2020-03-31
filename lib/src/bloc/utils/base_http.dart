@@ -13,7 +13,7 @@ class BaseHttpConfig {
 
   BaseHttpConfig._internal() {
     final HttpLink _httpLink =
-        HttpLink(uri: AplicationConstants.API_URL);
+        HttpLink(uri: AplicationConstants.apiUrl);
     final AuthLink _authLink =
         AuthLink(getToken: () async => await SecureStorage.getToken());
 

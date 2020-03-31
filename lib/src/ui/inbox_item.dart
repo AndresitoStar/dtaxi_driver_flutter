@@ -14,7 +14,7 @@ class InboxItem extends StatefulWidget {
 
 class _InboxItemState extends State<InboxItem> {
   bool details;
-  String _radioReasonValue = "";
+//  String _radioReasonValue = "";
 
   @override
   void initState() {
