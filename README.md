@@ -22,7 +22,7 @@ NP - No probado
 C - Haciendose
 
 - [X] Autenticarse en el sistema, verificando que el rol del usuario sea DRIVER
-- [NP] Obtener las demandas PENDIENTES y listarlas (Almacenarlas en db local)
+- [X] Obtener las demandas PENDIENTES y listarlas (Almacenarlas en db local)
 - [X] Pull to refresh en la pantalla de las demandas
 - [C] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
 - [ ] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)

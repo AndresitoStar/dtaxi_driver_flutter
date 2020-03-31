@@ -91,6 +91,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => DemandsScreen(
                               demandsBloc: DemandsBloc(),
+                              state: DemandScreenState.ACCEPTED,
                             )));
                   },
                   activeRoute: "/",

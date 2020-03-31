@@ -30,11 +30,13 @@ class _HomepageState extends State<Homepage>
         text: "Pendientes",
         child: DemandsScreen(
           demandsBloc: DemandsBloc(),
+          state: DemandScreenState.PENDING,
         )),
     _Page(
         text: "Aceptados",
         child: DemandsScreen(
           demandsBloc: DemandsBloc(),
+          state: DemandScreenState.ACCEPTED,
         ))
   ];
 

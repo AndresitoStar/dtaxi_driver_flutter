@@ -141,7 +141,7 @@ class _InboxItemState extends State<InboxItem> {
                       )),
                   OutlineButton(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: details ? Text("VER MENOS") : Text("DETALLES"),
+                    child: details ? Text("DETALLES") : Text("VER MENOS"),
                     onPressed: () {
                       setState(() {
                         details = !details;

@@ -46,7 +46,7 @@ class Queries {
 }
 
 class Mutations {
-  static const acceptDemand = """
+  static const acceptDemand = Fragments.demandResults + """
    mutation acceptDemand (\$demandId: ID!){
    demandAccepted (demandId:\$demandId) {
      ...results

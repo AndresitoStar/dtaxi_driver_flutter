@@ -40,8 +40,13 @@ class IProvider<T> with DioBase {
       variables: data,
     ));
 
-    if (response.hasException != null && response.exception.graphqlErrors.isNotEmpty)
-      throw response.exception.graphqlErrors.first;
+    if(response.hasException) {
+      if (response.exception.graphqlErrors.isNotEmpty)
+        throw new Exception(response.exception.graphqlErrors.first.message);
+      if (response.exception.clientException != null){
+        throw new Exception(response.exception.clientException.message);
+      }
+    }
     return createResponseModelFromJson(response.data, key);
   }
 

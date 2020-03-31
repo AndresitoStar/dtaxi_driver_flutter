@@ -4,14 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
+class DemandScreenState {
+  static const int PENDING = 1;
+  static const int ACCEPTED = 2;
+}
+
 class DemandsScreen extends StatefulWidget {
   const DemandsScreen({
     Key key,
     @required DemandsBloc demandsBloc,
+    @required int state
   })  : _demandsBloc = demandsBloc,
+        _state = state,
         super(key: key);
 
   final DemandsBloc _demandsBloc;
+  final int _state;
 
   @override
   DemandsScreenState createState() {
@@ -57,7 +66,7 @@ class DemandsScreenState extends State<DemandsScreen> {
               ));
             }
             if (currentState is InDemandsState) {
-              if (currentState.error != null)
+              if (currentState.error != null) {
                 Future.microtask(() => showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -73,24 +82,43 @@ class DemandsScreenState extends State<DemandsScreen> {
                             )
                           ],
                         )));
-              return new RefreshIndicator(
-                onRefresh: refreshList,
-                child: ListView.builder(
-                  itemCount: currentState.pendingDemands.length,
-                  itemBuilder: (context, index) {
-                    return InboxItem(
-                      demand: currentState.pendingDemands[index],
-                    );
-                  },
-                ),
-              );
+              }
+
+              if(this.widget._state == DemandScreenState.PENDING){
+                return new RefreshIndicator(
+                  onRefresh: refreshList,
+                  child: ListView.builder(
+                    itemCount: currentState.pendingDemands.length,
+                    itemBuilder: (context, index) {
+                      return InboxItem(
+                        demand: currentState.pendingDemands[index],
+                        demandsBloc: this._demandsBloc,
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return new RefreshIndicator(
+                  onRefresh: refreshList,
+                  child: ListView.builder(
+                    itemCount: currentState.acceptedDemands.length,
+                    itemBuilder: (context, index) {
+                      return InboxItem(
+                        demand: currentState.acceptedDemands[index],
+                        demandsBloc: this._demandsBloc,
+                      );
+                    },
+                  ),
+                );
+              }
+
             }
             return Container();
           }),
     );
   }
 
-  void refreshList() {
+  Future<void> refreshList() {
     _demandsBloc.add(LoadDemandsEvent());
   }
 }

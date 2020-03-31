@@ -12,7 +12,7 @@ class DemandsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Demands"),
       ),
-      body: DemandsScreen(demandsBloc: _demandsBloc),
+      body: DemandsScreen(demandsBloc: _demandsBloc, state: DemandScreenState.PENDING,),
     );
   }
 }

@@ -1,11 +1,9 @@
 buildscript {
     repositories {
-        //maven { url 'http://nexus.prod.uci.cu/repository/maven-android/' }
-        google()
-        jcenter()
+        maven { url 'E:/m2repository' }
         mavenLocal()
-        maven { url 'https://jitpack.io' }
         mavenCentral()
+//        maven { url 'https://jitpack.io' }
     }
 
     dependencies {
@@ -15,12 +13,10 @@ buildscript {
 
 allprojects {
     repositories {
-        //maven { url 'http://nexus.prod.uci.cu/repository/maven-android/' }
-        google()
-        jcenter()
+        maven { url 'E:/m2repository' }
         mavenLocal()
-        maven { url 'https://jitpack.io' }
         mavenCentral()
+//        maven { url 'https://jitpack.io' }
     }
 }
 
