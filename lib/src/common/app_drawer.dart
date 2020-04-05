@@ -80,14 +80,8 @@ class _AppDrawerState extends State<AppDrawer> {
                               authRepository
                                   .updateDriverState(snapshot.data.driver.id,
                                       value ? "AVAILABLE" : "NOAVAILABLE")
-                                  .then((data) {
-                                if (data.results.first != null) {
-                                  SecureStorage.saveDriverData(data.results.first).then((_){
-                                    _getUserData();
-                                  });
-                                }
-                              }, onError: (error) {
-                                print(error);
+                                  .then((_) {
+                                _getUserData();
                               });
                             })
                       ],

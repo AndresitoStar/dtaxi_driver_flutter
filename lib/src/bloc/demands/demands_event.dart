@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dtaxi_driver/src/bloc/authentication/authentication_repository.dart';
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:meta/meta.dart';
@@ -10,6 +11,7 @@ abstract class DemandsEvent {
       {DemandsState currentState, DemandsBloc bloc});
 
   final DemandsRepository _demandsRepository = new DemandsRepository();
+  final AuthenticationRepository _authenticationRepository = new AuthenticationRepository();
 }
 
 class LoadDemandsEvent extends DemandsEvent {
@@ -106,9 +108,11 @@ class StartDemandEvent extends DemandsEvent {
   Future<DemandsState> applyAsync(
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
-      await _demandsRepository.startDemand(demandId);
+      var demand = await _demandsRepository.startDemand(demandId);
       var pending = await _demandsRepository.loadPendingDemands();
       var accepted = await _demandsRepository.loadDemandsByDriver();
+      if(demand.results.first != null && demand.results.first.driver.id != null)
+        _authenticationRepository.updateDriverState(demand.results.first.driver.id, "NOAVAILABLE");
       return InDemandsState(pending, accepted);
     } catch (error, stacktrace) {
       if (error is GraphQLError && currentState is InDemandsState)
@@ -181,9 +185,11 @@ class FinishDemandEvent extends DemandsEvent {
   Future<DemandsState> applyAsync(
       {DemandsState currentState, DemandsBloc bloc}) async {
     try {
-      await _demandsRepository.finishDemand(demandId);
+      var demand = await _demandsRepository.finishDemand(demandId);
       var pending = await _demandsRepository.loadPendingDemands();
       var accepted = await _demandsRepository.loadDemandsByDriver();
+      if(demand.results.first != null && demand.results.first.driver.id != null)
+        _authenticationRepository.updateDriverState(demand.results.first.driver.id, "AVAILABLE");
       return InDemandsState(pending, accepted);
     } catch (error, stacktrace) {
       if (error is GraphQLError && currentState is InDemandsState)

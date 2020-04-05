@@ -72,7 +72,7 @@ class DemandsRepository {
         Mutations.acceptDemand, "demandAccepted",
         data: {"demandId": demandId});
 
-    if(response.results != null){
+    if(response.results.length > 0){
       _helper.saveOne(response.results[0].toDBJson());
     }
 
@@ -99,7 +99,7 @@ class DemandsRepository {
       "demandId": demandId,
     });
 
-    if(response.results != null){
+    if(response.results.length > 0){
       _helper.saveOne(response.results[0].toDBJson());
     }
 
@@ -123,7 +123,7 @@ class DemandsRepository {
       "demandId": demandId,
     });
 
-    if(response.results != null){
+    if(response.results.length > 0){
       _helper.saveOne(response.results[0].toDBJson());
     }
 
@@ -136,7 +136,7 @@ class DemandsRepository {
       "demandId": demandId,
     });
 
-    if(response.results != null){
+    if(response.results.length > 0){
       _helper.saveOne(response.results[0].toDBJson());
     }
 

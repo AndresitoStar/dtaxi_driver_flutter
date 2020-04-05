@@ -41,8 +41,8 @@ C - Haciendose
         - DEMAND_LOST_FOUND: Cuando le asignan un objeto perdido al chofer. Levantar un dialogo indicando que tiene un objeto perdido, brindando la opcion de ir a la pantalla de objetos perdidos
 - [ ] Enviar informacion de coordenadas de las demandas a las aplicaciones de mapas (Maps.Me y Osmand). En caso de que no la tenga instalada mostrar 
     un dialogo indicando que debe instalarsela
-- [C] Cuando comienza una demanda poner automaticamente a NO_DISPONIBLE
-- [C] Cuando termina una demanda poner automaticamente a DISPONIBLE
+- [X] Cuando comienza una demanda poner automaticamente a NO_DISPONIBLE
+- [X] Cuando termina una demanda poner automaticamente a DISPONIBLE
 - [ ] Permitir en las demandas que esten en ACCEPTED, IN_COURSE y STARTED chatear con el cliente, a traves de mqtt
 - [ ] Mandar una traza a la api cada vez que:
     - [C] Cambia de estado

@@ -135,7 +135,8 @@ class Fragments {
     annotation                
     driverAnnotation          
     price                     
-    driver{                   
+    driver{
+        id                   
         name                  
         userId                
                               
