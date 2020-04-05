@@ -27,7 +27,7 @@ C - Haciendose
 - [X] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
 - [C] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)
 - [C] Mostrar pagina de informacion de la app (about us)
-- [C] Enviar localizacion del chofer en tiempo real (lat, lng) (No tiene que ser un Service, puede ser mientras la app este abierta)
+- [X] Enviar localizacion del chofer en tiempo real (lat, lng) (No tiene que ser un Service, puede ser mientras la app este abierta)
 - [X] Permitir cambiar el estado del chofer entre DISPONIBLE y NO_DISPONIBLE
     (DISPONIBLE Solo si se tienen las coordenadas actuales)
 - [ ] Subscribirse a la subscripcion de mqtt del chofer, la cual notificara cualquier eventualidad

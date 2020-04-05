@@ -1,10 +1,15 @@
 import 'package:dtaxi_driver/src/bloc/authentication/index.dart';
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:dtaxi_driver/src/bloc/localization/localization_bloc.dart';
+import 'package:dtaxi_driver/src/bloc/localization/localization_events.dart';
+import 'package:dtaxi_driver/src/bloc/localization/localization_service.dart';
 import 'package:dtaxi_driver/src/bloc/utils/secure_storage.dart';
 import 'package:dtaxi_driver/src/common/constants.dart';
 import 'package:dtaxi_driver/src/ui/homepage.dart';
 import 'package:dtaxi_driver/src/ui/lost_and_found.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -22,6 +27,7 @@ class _AppDrawerState extends State<AppDrawer> {
     subject = new BehaviorSubject<AuthenticationModel>();
     authRepository = new AuthenticationRepository();
     _getUserData();
+    super.initState();
   }
 
   @override
@@ -76,11 +82,17 @@ class _AppDrawerState extends State<AppDrawer> {
                         ),
                         Switch.adaptive(
                             value: available,
-                            onChanged: (value) {
+                            onChanged: (value) async {
+                              Position current = await LocationService().getCurrentLocation();
                               authRepository
                                   .updateDriverState(snapshot.data.driver.id,
-                                      value ? "AVAILABLE" : "NOAVAILABLE")
+                                      value ? "AVAILABLE" : "NOAVAILABLE", location: current)
                                   .then((_) {
+                                if(value){
+                                  BlocProvider.of<LocalizationBloc>(context).add(StartLocationBroadcastEvent());
+                                } else {
+                                  BlocProvider.of<LocalizationBloc>(context).add(StopLocationBroadcastEvent());
+                                }
                                 _getUserData();
                               });
                             })

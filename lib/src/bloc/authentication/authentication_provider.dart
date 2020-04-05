@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dtaxi_driver/src/bloc/utils/provider_interface.dart';
 
 import 'index.dart';
