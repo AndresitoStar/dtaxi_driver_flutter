@@ -234,6 +234,7 @@ class DemandType {
   static const ASSIGNED = "ASSIGNED";
   static const IN_COURSE = "IN_COURSE";
   static const CANCELED = "CANCELED";
+  static const STARTED = "STARTED";
 }
 
 class CancelType {

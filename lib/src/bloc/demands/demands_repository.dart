@@ -12,7 +12,7 @@ class DemandsRepository {
   }
 
   Future<List<Demand>> loadPendingDemands(
-      {List<String> demandStates, bool api}) async {
+      {List<String> demandStates, bool api = false}) async {
 
     if(api){
       var apiResponse = await _demandsProvider
@@ -38,7 +38,7 @@ class DemandsRepository {
   }
 
   Future<List<Demand>> loadDemandsByDriver(
-      {List<String> demandStates, bool api}) async {
+      {List<String> demandStates, bool api = false}) async {
 
     if(api){
       var apiResponse = await _demandsProvider
@@ -47,6 +47,7 @@ class DemandsRepository {
             [
               DemandType.ACCEPTED,
               DemandType.ASSIGNED,
+              DemandType.STARTED,
               DemandType.IN_COURSE,
             ]
       });
@@ -58,6 +59,7 @@ class DemandsRepository {
       "state" : [
         DemandType.ACCEPTED,
         DemandType.ASSIGNED,
+        DemandType.STARTED,
         DemandType.IN_COURSE,
       ]
     });
@@ -71,7 +73,7 @@ class DemandsRepository {
         data: {"demandId": demandId});
 
     if(response.results != null){
-      _helper.update(response.results[0].toDBJson(), demandId);
+      _helper.saveOne(response.results[0].toDBJson());
     }
 
     return response;
@@ -98,7 +100,7 @@ class DemandsRepository {
     });
 
     if(response.results != null){
-      _helper.update(response.results[0].toDBJson(), demandId);
+      _helper.saveOne(response.results[0].toDBJson());
     }
 
     return response;
@@ -122,7 +124,7 @@ class DemandsRepository {
     });
 
     if(response.results != null){
-      _helper.update(response.results[0].toDBJson(), demandId);
+      _helper.saveOne(response.results[0].toDBJson());
     }
 
     return response;
@@ -135,7 +137,7 @@ class DemandsRepository {
     });
 
     if(response.results != null){
-      _helper.update(response.results[0].toDBJson(), demandId);
+      _helper.saveOne(response.results[0].toDBJson());
     }
 
     return response;

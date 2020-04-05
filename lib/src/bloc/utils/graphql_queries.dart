@@ -46,7 +46,8 @@ class Queries {
 }
 
 class Mutations {
-  static const acceptDemand = Fragments.demandResults + """
+  static const acceptDemand = Fragments.demandResults +
+      """
    mutation acceptDemand (\$demandId: ID!){
    demandAccepted (demandId:\$demandId) {
      ...results
@@ -94,6 +95,16 @@ class Mutations {
   mutation DeclineDemand (\$demandId: ID!){
     demandNotifyAction(demandId: \$demandId, action:REFUSED)
 }
+  """;
+
+  static const updateDriver = """
+    mutation DriverUpdate(\$id: ID!, \$resource: DriverUpdateInput!){
+      driverUpdateV2(id: \$id, resource: \$resource){
+    	  id,
+        name,
+        state
+  	  }
+    }
   """;
 }
 

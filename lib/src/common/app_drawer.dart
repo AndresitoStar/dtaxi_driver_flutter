@@ -1,8 +1,11 @@
 import 'package:dtaxi_driver/src/bloc/authentication/index.dart';
 import 'package:dtaxi_driver/src/bloc/demands/index.dart';
+import 'package:dtaxi_driver/src/bloc/utils/secure_storage.dart';
+import 'package:dtaxi_driver/src/common/constants.dart';
 import 'package:dtaxi_driver/src/ui/homepage.dart';
 import 'package:dtaxi_driver/src/ui/lost_and_found.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -10,138 +13,177 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  var available = false;
+  var available;
+  AuthenticationRepository authRepository;
+  BehaviorSubject<AuthenticationModel> subject;
+
+  @override
+  void initState() {
+    subject = new BehaviorSubject<AuthenticationModel>();
+    authRepository = new AuthenticationRepository();
+    _getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        children: <Widget>[
-          DrawerHeader(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      border: Border.all()),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundColor: Colors.grey,
-                  ),
-                ),
-                Text(
-                  "JIMMY EL META",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                available ? "DISPONIBLE" : "NO DISPONIBLE",
-                style: TextStyle(
-                    color: available ? Colors.green : Colors.red, fontSize: 18),
-              ),
-              Switch.adaptive(
-                  value: available,
-                  onChanged: (value) {
-                    setState(() {
-                      available = value;
-                    });
-                  })
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                DrawerListTile(
-                  title: "BANDEJA DE ENTRADA",
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Homepage(
-                              title: "Bandeja de entrada",
-                              tab: HomepageTab.INBOX,
-                            )));
-                  },
-                  activeRoute: "/",
-                  icon: Icons.inbox,
-                  route: "/",
-                ),
-                DrawerListTile(
-                  title: "BANDEJA DE ENTRADA SNOW",
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => DemandsScreen(
-                              demandsBloc: DemandsBloc(),
-                              state: DemandScreenState.ACCEPTED,
-                            )));
-                  },
-                  activeRoute: "/",
-                  icon: Icons.inbox,
-                  route: "/",
-                ),
-                DrawerListTile(
-                  title: "OBJETOS PERDIDOS",
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LostAndFound()));
-                  },
-                  activeRoute: "/",
-                  icon: Icons.rv_hookup,
-                  route: "/",
-                ),
-                DrawerListTile(
-                  title: "AJUSTES",
-                  onTap: () {},
-                  activeRoute: "/",
-                  icon: Icons.settings,
-                  route: "/",
-                ),
-                DrawerListTile(
-                  title: "CAMBIAR SESIÓN",
-                  onTap: () => AuthenticationBloc()
-                      .add(LogoutAuthenticationEvent()),
-                  activeRoute: "/",
-                  icon: Icons.cancel,
-                  route: "/",
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Divider(
-              color: Colors.grey,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-            child: Text(
-              "Desarrollado por Pyxel Solutions.",
-              style: TextStyle(fontSize: 15, color: Colors.grey),
-            ),
-          ),
-        ],
-      ),
-    );
+        child: StreamBuilder<AuthenticationModel>(
+            stream: subject.stream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data is AuthenticationModel) {
+                available = snapshot.data.driver.state == "AVAILABLE";
+                return Column(
+                  children: <Widget>[
+                    DrawerHeader(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                border: Border.all()),
+                            child: CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.grey,
+                              backgroundImage: NetworkImage(AplicationConstants
+                                      .restEndpoint +
+                                  "/profile-image/${snapshot.data.profileImageId}"),
+                            ),
+                          ),
+                          Text(
+                            snapshot.data.fullname.toUpperCase(),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Divider(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          available ? "DISPONIBLE" : "NO DISPONIBLE",
+                          style: TextStyle(
+                              color: available ? Colors.green : Colors.red,
+                              fontSize: 18),
+                        ),
+                        Switch.adaptive(
+                            value: available,
+                            onChanged: (value) {
+                              authRepository
+                                  .updateDriverState(snapshot.data.driver.id,
+                                      value ? "AVAILABLE" : "NOAVAILABLE")
+                                  .then((data) {
+                                if (data.results.first != null) {
+                                  SecureStorage.saveDriverData(data.results.first).then((_){
+                                    _getUserData();
+                                  });
+                                }
+                              }, onError: (error) {
+                                print(error);
+                              });
+                            })
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Divider(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          DrawerListTile(
+                            title: "BANDEJA DE ENTRADA",
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Homepage(
+                                        title: "Bandeja de entrada",
+                                        tab: HomepageTab.INBOX,
+                                      )));
+                            },
+                            activeRoute: "/",
+                            icon: Icons.inbox,
+                            route: "/",
+                          ),
+                          DrawerListTile(
+                            title: "BANDEJA DE ENTRADA SNOW",
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => DemandsScreen(
+                                        demandsBloc: DemandsBloc(),
+                                        state: DemandScreenState.ACCEPTED,
+                                      )));
+                            },
+                            activeRoute: "/",
+                            icon: Icons.inbox,
+                            route: "/",
+                          ),
+                          DrawerListTile(
+                            title: "OBJETOS PERDIDOS",
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => LostAndFound()));
+                            },
+                            activeRoute: "/",
+                            icon: Icons.rv_hookup,
+                            route: "/",
+                          ),
+                          DrawerListTile(
+                            title: "AJUSTES",
+                            onTap: () {},
+                            activeRoute: "/",
+                            icon: Icons.settings,
+                            route: "/",
+                          ),
+                          DrawerListTile(
+                            title: "CAMBIAR SESIÓN",
+                            onTap: () => AuthenticationBloc()
+                                .add(LogoutAuthenticationEvent()),
+                            activeRoute: "/",
+                            icon: Icons.cancel,
+                            route: "/",
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Divider(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 10),
+                      child: Text(
+                        "Desarrollado por Pyxel Solutions.",
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+            }));
+  }
+
+  void _getUserData() {
+    SecureStorage.getUserData().then((value) {
+      subject.add(value);
+    }, onError: (error) {
+      subject.addError(error);
+    });
   }
 }
 

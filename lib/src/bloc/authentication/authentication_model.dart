@@ -17,14 +17,28 @@ class AuthenticationResponse extends ResponseModel<AuthenticationModel> {
   }
 }
 
+class DriverResponse extends ResponseModel<Driver>{
+  List<Driver> results;
+
+  DriverResponse({this.results});
+
+  DriverResponse.fromJson(Map<String, dynamic> json, String key) {
+    if (json[key] != null) {
+      results = [Driver.fromJson(json[key])];
+    } else
+      results = [];
+  }
+}
+
 @JsonSerializable()
 class AuthenticationModel extends Equatable {
   final String token;
   final String fullname;
   final Map role;
   final String profileImageId;
+  final Driver driver;
 
-  AuthenticationModel(this.token, this.fullname, this.role, this.profileImageId);
+  AuthenticationModel(this.token, this.fullname, this.role, this.profileImageId, this.driver);
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) =>
       _$AuthenticationModelFromJson(json);
@@ -36,9 +50,12 @@ class AuthenticationModel extends Equatable {
 class Driver {
   final String id;
   final String name;
+  final num score;
   final String userId;
+  final String phone;
+  final String state;
 
-  Driver(this.id, this.name, this.userId);
+  Driver(this.id, this.name, this.userId, {this.score, this.phone, this.state});
 
   factory Driver.fromJson(Map<String, dynamic> json) => _$DriverFromJson(json);
   Map<String, dynamic> toJson() => _$DriverToJson(this);

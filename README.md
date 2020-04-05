@@ -18,17 +18,17 @@ samples, guidance on mobile development, and a full API reference.
 # Requisitos funcionales principales de DTaxi Chofer
 
 X - Terminado
-NP - No probado
+NP - No .probado
 C - Haciendose
 
 - [X] Autenticarse en el sistema, verificando que el rol del usuario sea DRIVER
 - [X] Obtener las demandas PENDIENTES y listarlas (Almacenarlas en db local)
 - [X] Pull to refresh en la pantalla de las demandas
-- [C] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
-- [ ] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)
-- [ ] Mostrar pagina de informacion de la app (about us)
-- [ ] Enviar localizacion del chofer en tiempo real (lat, lng) (No tiene que ser un Service, puede ser mientras la app este abierta)
-- [ ] Permitir cambiar el estado del chofer entre DISPONIBLE y NO_DISPONIBLE
+- [X] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
+- [C] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)
+- [C] Mostrar pagina de informacion de la app (about us)
+- [C] Enviar localizacion del chofer en tiempo real (lat, lng) (No tiene que ser un Service, puede ser mientras la app este abierta)
+- [X] Permitir cambiar el estado del chofer entre DISPONIBLE y NO_DISPONIBLE
     (DISPONIBLE Solo si se tienen las coordenadas actuales)
 - [ ] Subscribirse a la subscripcion de mqtt del chofer, la cual notificara cualquier eventualidad
     - [ ] Reaccionar a cada una de las notificaciones, en todos los casos actualizar la demanda en la db local
@@ -41,18 +41,19 @@ C - Haciendose
         - DEMAND_LOST_FOUND: Cuando le asignan un objeto perdido al chofer. Levantar un dialogo indicando que tiene un objeto perdido, brindando la opcion de ir a la pantalla de objetos perdidos
 - [ ] Enviar informacion de coordenadas de las demandas a las aplicaciones de mapas (Maps.Me y Osmand). En caso de que no la tenga instalada mostrar 
     un dialogo indicando que debe instalarsela
-- [ ] Cuando comienza una demanda poner automaticamente a NO_DISPONIBLE
-- [ ] Cuando termina una demanda poner automaticamente a DISPONIBLE
+- [C] Cuando comienza una demanda poner automaticamente a NO_DISPONIBLE
+- [C] Cuando termina una demanda poner automaticamente a DISPONIBLE
 - [ ] Permitir en las demandas que esten en ACCEPTED, IN_COURSE y STARTED chatear con el cliente, a traves de mqtt
 - [ ] Mandar una traza a la api cada vez que:
-    - [ ] Cambia de estado
-    - [ ] acepta, cancela, comienza y termina una demandas
-    - [ ] se actualiza cualquier dato del usuario
+    - [C] Cambia de estado
+    - [X] acepta, cancela, comienza y termina una demandas
+    - [C] se actualiza cualquier dato del usuario
 - [ ] Cuando levante la app, consultar si hay una actualizacion de apk; en caso de existir, indicar mediante un dialogo y mandar a descargarla
 - [ ] Permitir Cerrar sesion
 
 # Otros requisitos que surgieron
 - [X] Tratamiento de errores en la autenticación
-- [ ] Guardar los datos de la información del usuario en la autenticación
+- [X] Guardar los datos de la información del usuario en la autenticación
+- [X] Cargar las ultimas demandas obtenidas cuando se esta offline
 
 
