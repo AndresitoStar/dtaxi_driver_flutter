@@ -3,6 +3,9 @@ buildscript {
         maven { url 'E:/m2repository' }
         mavenLocal()
         mavenCentral()
+        maven {
+            url "https://maven.google.com"
+        }
 //        maven { url 'https://jitpack.io' }
     }
 
@@ -17,6 +20,9 @@ allprojects {
         maven { url 'E:/m2repository' }
         mavenLocal()
         mavenCentral()
+        maven {
+            url "https://maven.google.com"
+        }
 //        maven { url 'https://jitpack.io' }
     }
 }
