@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dtaxi_driver/src/bloc/localization/localization_bloc.dart';
+import 'package:dtaxi_driver/src/bloc/localization/localization_events.dart';
 import 'package:dtaxi_driver/src/bloc/utils/secure_storage.dart';
 import 'package:meta/meta.dart';
 
@@ -11,7 +13,7 @@ abstract class AuthenticationEvent {
       {AuthenticationState currentState, AuthenticationBloc bloc});
 
   final AuthenticationRepository _authenticationRepository =
-      new AuthenticationRepository();
+  new AuthenticationRepository();
 }
 
 class LoginInitAuthenticationEvent extends AuthenticationEvent {
@@ -44,7 +46,8 @@ class LoginAuthenticationEvent extends AuthenticationEvent {
   Future<AuthenticationState> applyAsync(
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
-      var response = await _authenticationRepository.login(username.trim(), password.trim());
+      var response = await _authenticationRepository.login(
+          username.trim(), password.trim());
       var user = response.results.first;
       if (user.role["name"] == "DRIVER") {
         SecureStorage.saveToken(response.results.first.token);
@@ -65,7 +68,17 @@ class LogoutAuthenticationEvent extends AuthenticationEvent {
   Future<AuthenticationState> applyAsync(
       {AuthenticationState currentState, AuthenticationBloc bloc}) async {
     try {
-      SecureStorage.removeToken();
+      var user = await SecureStorage.getUserData();
+      if (user != null && user.driver != null && user.driver.id != null &&
+          user.driver.state == "AVAILABLE") {
+        AuthenticationRepository().updateDriverState(
+            user.driver.id, "NOAVAILABLE").then((_) {
+          LocalizationBloc().add(StopLocationBroadcastEvent());
+          SecureStorage.removeToken();
+        });
+      } else {
+        SecureStorage.removeToken();
+      }
       return new InAuthenticationState();
     } catch (_, stackTrace) {
       print('$_ $stackTrace');

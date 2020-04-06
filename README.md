@@ -25,7 +25,7 @@ C - Haciendose
 - [X] Obtener las demandas PENDIENTES y listarlas (Almacenarlas en db local)
 - [X] Pull to refresh en la pantalla de las demandas
 - [X] Aceptar, Comenzar, Recoger cliente, Terminar demanda, Cancelar demanda aceptada
-- [C] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)
+- [ ] Permitir actualizar informacion del usuario autenticado (nombre, telefono, contraseña, foto de perfil)
 - [C] Mostrar pagina de informacion de la app (about us)
 - [X] Enviar localizacion del chofer en tiempo real (lat, lng) (No tiene que ser un Service, puede ser mientras la app este abierta)
 - [X] Permitir cambiar el estado del chofer entre DISPONIBLE y NO_DISPONIBLE
@@ -39,17 +39,17 @@ C - Haciendose
         - DEMAND_ASSIGNED: Cuando asignan una demanda al chofer, demanda que no se puede declinar. Levantar la pantalla de demanda urgente para aceptarla demanda. Cuando acepte, llamar al comenzarDemanda.
         - DEMAND_CANCELED: Cuando una demanda que ya tiene el chofer se cancela. Levantar un dialogo indicando que la demanda fue cancelada 
         - DEMAND_LOST_FOUND: Cuando le asignan un objeto perdido al chofer. Levantar un dialogo indicando que tiene un objeto perdido, brindando la opcion de ir a la pantalla de objetos perdidos
-- [ ] Enviar informacion de coordenadas de las demandas a las aplicaciones de mapas (Maps.Me y Osmand). En caso de que no la tenga instalada mostrar 
+- [NP] Enviar informacion de coordenadas de las demandas a las aplicaciones de mapas (Maps.Me y Osmand). En caso de que no la tenga instalada mostrar
     un dialogo indicando que debe instalarsela
 - [X] Cuando comienza una demanda poner automaticamente a NO_DISPONIBLE
 - [X] Cuando termina una demanda poner automaticamente a DISPONIBLE
 - [ ] Permitir en las demandas que esten en ACCEPTED, IN_COURSE y STARTED chatear con el cliente, a traves de mqtt
-- [ ] Mandar una traza a la api cada vez que:
-    - [C] Cambia de estado
+- [X] Mandar una traza a la api cada vez que:
+    - [X] Cambia de estado
     - [X] acepta, cancela, comienza y termina una demandas
-    - [C] se actualiza cualquier dato del usuario
+    - [X] se actualiza cualquier dato del usuario
 - [ ] Cuando levante la app, consultar si hay una actualizacion de apk; en caso de existir, indicar mediante un dialogo y mandar a descargarla
-- [ ] Permitir Cerrar sesion
+- [X] Permitir Cerrar sesion
 
 # Otros requisitos que surgieron
 - [X] Tratamiento de errores en la autenticación
