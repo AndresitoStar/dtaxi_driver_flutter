@@ -25,18 +25,23 @@ class ErrorScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                    height: 85,
-                    margin: EdgeInsets.only(bottom: 12.0),
-                    child: Icon(Icons.error, color: Colors.red, size: 80.0,)
+                Icon(Icons.error, color: Colors.red, size: 80.0,),
+//                Container(
+//                    height: 85,
+//                    margin: EdgeInsets.only(bottom: 12.0),
+//                    child: Icon(Icons.error, color: Colors.red, size: 80.0,)
+//                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(message.replaceAll("Exception:", ""), style: TextStyle(color: Colors.white, fontSize: 16.0),),
                 ),
-                Container(
-                  height: 50,
-                  margin: EdgeInsets.only(bottom: calculateMargin(heigth, 85+50)),
-                  child: Center(
-                    child: Text(message.replaceAll("Exception:", ""), style: TextStyle(color: Colors.white, fontSize: 30.0),),
-                  ),
-                ),
+//                Container(
+//                  height: 50,
+//                  margin: EdgeInsets.only(bottom: calculateMargin(heigth, 85+50)),
+//                  child: Center(
+//                    child: Text(message.replaceAll("Exception:", ""), style: TextStyle(color: Colors.white, fontSize: 30.0),),
+//                  ),
+//                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

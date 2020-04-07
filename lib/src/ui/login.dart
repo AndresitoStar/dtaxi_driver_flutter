@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _userCtrl = new TextEditingController();
     _passCtrl = new TextEditingController();
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.white));
+        SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.white));
     super.initState();
   }
 

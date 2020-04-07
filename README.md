@@ -57,3 +57,10 @@ C - Haciendose
 - [X] Cargar las ultimas demandas obtenidas cuando se esta offline
 
 
+# Detalles por revisar
+- En el login, no se muestra signo de que esta enviandose la peticion al server(loading)
+- En la pantalla error del login, el boton volver no retorna a la pantalla anterior
+- Quitar la accion del menu - [BANDEJA DE ENTRADA SNOW]
+- Cuando se le da clic en [BANDEJA DE ENTRADA] del drawer da error
+- Al presionar atras se desconecta y vuelve al login, (deberia preguntar si esta seguro de salir, y si algo cerrar la app)
+- No se puede ir a la pantalla de [AJUSTES]
